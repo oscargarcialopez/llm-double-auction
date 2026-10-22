@@ -205,7 +205,8 @@ def exploitability_figure(summary: dict, out: Path) -> None:
 def save(fig, stem: Path) -> None:
     stem.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(stem.with_suffix(".png"), dpi=160)
-    fig.savefig(stem.with_suffix(".pdf"))
+    # no CreationDate, so rebuilding from the cache leaves the committed PDFs unchanged
+    fig.savefig(stem.with_suffix(".pdf"), metadata={"CreationDate": None})
     plt.close(fig)
     print(f"-> {stem.with_suffix('.png')}")
 

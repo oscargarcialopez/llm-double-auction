@@ -393,7 +393,8 @@ def make_carousel(results_dir: Path, carousel_dir: Path) -> None:
     pdf_path = carousel_dir / "carousel.pdf"
     text = []  # the slides as plain text: a text alternative, and input for `auction check`
     with PdfPages(pdf_path, metadata={"Title": "Gemini agents and the "
-                                               "Myerson-Satterthwaite bound"}) as pdf:
+                                               "Myerson-Satterthwaite bound",
+                                      "CreationDate": None}) as pdf:
         for i, make in enumerate(SLIDES, start=1):
             sl = make(summary, facts)
             if sl.y < 0.06:
