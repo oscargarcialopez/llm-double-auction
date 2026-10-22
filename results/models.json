@@ -1,0 +1,112 @@
+[
+  {
+    "name": "models/gemini-2.5-flash",
+    "version": "001",
+    "display_name": "Gemini 2.5 Flash"
+  },
+  {
+    "name": "models/gemini-2.5-flash-preview-tts",
+    "version": "gemini-2.5-flash-exp-tts-2025-05-19",
+    "display_name": "Gemini 2.5 Flash Preview TTS"
+  },
+  {
+    "name": "models/gemini-flash-latest",
+    "version": "Gemini Flash Latest",
+    "display_name": "Gemini Flash Latest"
+  },
+  {
+    "name": "models/gemini-flash-lite-latest",
+    "version": "Gemini Flash-Lite Latest",
+    "display_name": "Gemini Flash-Lite Latest"
+  },
+  {
+    "name": "models/gemini-2.5-flash-lite",
+    "version": "001",
+    "display_name": "Gemini 2.5 Flash-Lite"
+  },
+  {
+    "name": "models/gemini-2.5-flash-image",
+    "version": "2.0",
+    "display_name": "Nano Banana"
+  },
+  {
+    "name": "models/gemini-3-flash-preview",
+    "version": "3-flash-preview-12-2025",
+    "display_name": "Gemini 3 Flash Preview"
+  },
+  {
+    "name": "models/gemini-3.1-flash-lite-preview",
+    "version": "3.1-flash-lite-preview-03-2026",
+    "display_name": "Gemini 3.1 Flash Lite Preview"
+  },
+  {
+    "name": "models/gemini-3.1-flash-lite",
+    "version": "3.1-flash-lite-05-2026",
+    "display_name": "Gemini 3.1 Flash Lite"
+  },
+  {
+    "name": "models/gemini-3.1-flash-image-preview",
+    "version": "3.0",
+    "display_name": "Nano Banana 2"
+  },
+  {
+    "name": "models/gemini-3.1-flash-image",
+    "version": "3.0",
+    "display_name": "Nano Banana 2"
+  },
+  {
+    "name": "models/gemini-3.1-flash-lite-image",
+    "version": "3.0",
+    "display_name": "Nano Banana 2 Lite"
+  },
+  {
+    "name": "models/gemini-3.5-flash",
+    "version": "3.5-flash-05-2026",
+    "display_name": "Gemini 3.5 Flash"
+  },
+  {
+    "name": "models/gemini-3.5-flash-lite",
+    "version": "3.5-flash-lite-07-2026",
+    "display_name": "Gemini 3.5 Flash Lite"
+  },
+  {
+    "name": "models/gemini-omni-flash-preview",
+    "version": "001",
+    "display_name": "Gemini Omni Flash Preview"
+  },
+  {
+    "name": "models/gemini-omni-1.1-flash",
+    "version": "001",
+    "display_name": "Gemini Omni 1.1 Flash"
+  },
+  {
+    "name": "models/gemini-3.6-flash",
+    "version": "3.6-flash-07-2026",
+    "display_name": "Gemini 3.6 Flash"
+  },
+  {
+    "name": "models/gemini-3.7-flash",
+    "version": "3.7-flash-08-2026",
+    "display_name": "Gemini 3.7 Flash"
+  },
+  {
+    "name": "models/gemini-3.8-flash",
+    "version": "3.0",
+    "display_name": "Gemini 3.8 Flash"
+  },
+  {
+    "name": "models/gemini-3.1-flash-tts-preview",
+    "version": "3.1-flash-tts-preview",
+    "display_name": "Gemini 3.1 Flash TTS Preview"
+  },
+  {
+    "name": "models/gemini-3.8-flash-tts",
+    "version": "3.8-flash-tts",
+    "display_name": "Gemini 3.8 Flash TTS"
+  },
+  {
+    "name": "models/gemini-3.8-flash-lite-tts",
+    "version": "3.8-flash-lite-tts",
+    "display_name": "Gemini 3.8 Flash Lite TTS"
+  }
+]

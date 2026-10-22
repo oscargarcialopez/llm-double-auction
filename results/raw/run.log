@@ -1,0 +1,43 @@
+projected total spend $2.603 (stop at $3.50)
+1240 planned, 20 cached, 1220 to call; spent so far $0.0416
+  503 on gemini-3.5-flash-lite; waiting 2s
+  50/1220 done, $0.0478
+  100/1220 done, $0.0539
+  200/1220 done, $0.0664
+  250/1220 done, $0.0727
+  300/1220 done, $0.0789
+  350/1220 done, $0.0851
+  400/1220 done, $0.1006
+  450/1220 done, $0.2344
+  500/1220 done, $0.3424
+  550/1220 done, $0.4427
+  600/1220 done, $0.4627
+  650/1220 done, $0.4770
+  700/1220 done, $0.4933
+  750/1220 done, $0.5053
+  800/1220 done, $0.5115
+  850/1220 done, $0.5178
+  900/1220 done, $0.5240
+  950/1220 done, $0.5380
+  1000/1220 done, $0.6914
+  1050/1220 done, $0.8382
+  500 on gemini-3.8-flash; waiting 2s
+  500 on gemini-3.8-flash; waiting 2s
+  1100/1220 done, $0.9806
+  500 on gemini-3.8-flash; waiting 2s
+  1150/1220 done, $1.4148
+  500 on gemini-3.8-flash; waiting 2s
+  1200/1220 done, $1.8197
+done 1220, failed 0; spent $1.9997
+cond role      n  in/call  out/call think/call    $/call  s/call  $ total
+A    buyer   200      285        15          0   0.00012    0.70   0.0248
+A    seller  200      286        16          0   0.00012    0.75   0.0250
+B    buyer    80      285       629        617   0.00257   13.89   0.2057
+B    seller   80      286       593        581   0.00244   13.02   0.1950
+C    buyer   200      266        16          0   0.00012    0.75   0.0238
+C    seller  200      269        18          0   0.00013    0.73   0.0250
+D    buyer    80      266       815        803   0.00325   10.60   0.2603
+D    seller   80      269       669        655   0.00271    9.23   0.2169
+E    buyer    60      287      2342       2328   0.00900   22.06   0.5399
+E    seller   60      288      2090       2077   0.00805   20.22   0.4833
+total $1.9997 over 1240 calls

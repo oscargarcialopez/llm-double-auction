@@ -1,0 +1,3431 @@
+{
+  "theory": {
+    "ms_frontier": 0.84375,
+    "first_best_gains": 16.666666666666668,
+    "eq_gains_k_half": 14.0625,
+    "eq_payoff_each_k_half": 7.03125,
+    "eq_k_third": {
+      "buyer": 6.172835185185183,
+      "seller": 7.716053703703705,
+      "gains": 13.888888888888891,
+      "first_best": 16.66665925925926,
+      "efficiency": 0.8333333333333335
+    },
+    "midpoint_grid": {
+      "pairs": 400,
+      "pairs_on_boundary": 15,
+      "eq_efficiency_if_boundary_pairs_skip": 0.8157894736842105,
+      "eq_efficiency_if_boundary_pairs_trade": 0.8721804511278195
+    }
+  },
+  "prices_usd_per_m": {
+    "gemini-3.5-flash-lite": {
+      "input": 0.3,
+      "output": 2.5
+    },
+    "gemini-3.8-flash": {
+      "input": 0.75,
+      "output": 3.75
+    }
+  },
+  "conditions": {
+    "A": {
+      "label": "Flash-Lite, informed prompt",
+      "model": "gemini-3.5-flash-lite",
+      "thinking_level": "minimal",
+      "prompt_version": "informed-v1",
+      "k": 0.5,
+      "invalid_replies": 0,
+      "buyer": {
+        "n": 200,
+        "intercept": -0.12517659570449113,
+        "intercept_ci": [
+          -1.2780089353452997,
+          1.5196122174392925
+        ],
+        "slope": 0.7017235935213955,
+        "slope_ci": [
+          0.6751278699934726,
+          0.7231618861761311
+        ],
+        "resid_sd": 4.351163894969935,
+        "eq_intercept": 8.333333333333334,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 150,
+        "fit_trade_region": {
+          "intercept": 0.7469235904252054,
+          "intercept_ci": [
+            -0.8637968608288089,
+            2.2324221507093167
+          ],
+          "slope": 0.6906990339207083,
+          "slope_ci": [
+            0.6654902786197274,
+            0.7174080818875037
+          ],
+          "resid_sd": 3.970912881670093
+        },
+        "mean_abs_dev_from_eq": 7.15585,
+        "mean_abs_dev_from_eq_trade_region": 6.325844444444445,
+        "share_at_eq_to_the_cent": 0.005,
+        "share_at_eq_trade_region": 0.006666666666666667,
+        "share_at_k_half_formula": 0.005,
+        "share_at_k_half_formula_trade_region": 0.006666666666666667,
+        "ir_violations": 1,
+        "ir_violation_share": 0.005,
+        "ir_violation_ci": [
+          0.0008831459893662054,
+          0.02777439986977148
+        ],
+        "ir_binding": 1,
+        "ir_binding_share": 0.005,
+        "ir_binding_ci": [
+          0.0008831459893662054,
+          0.02777439986977148
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 0,
+        "recognised_by_name": 0,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 10,
+            "value_mean": 1.7890000000000001,
+            "amount_mean": 4.229,
+            "amount_ci": [
+              0.3739250000000001,
+              11.334999999999999
+            ],
+            "amount_sd": 11.055028468730619
+          },
+          {
+            "stratum": 1,
+            "n": 10,
+            "value_mean": 8.223,
+            "amount_mean": 4.374,
+            "amount_ci": [
+              3.8300000000000005,
+              4.885
+            ],
+            "amount_sd": 0.895398111332483
+          },
+          {
+            "stratum": 2,
+            "n": 10,
+            "value_mean": 11.880999999999998,
+            "amount_mean": 6.953999999999999,
+            "amount_ci": [
+              5.6439,
+              8.737124999999999
+            ],
+            "amount_sd": 2.667154955295165
+          },
+          {
+            "stratum": 3,
+            "n": 10,
+            "value_mean": 17.898999999999997,
+            "amount_mean": 11.427,
+            "amount_ci": [
+              10.648974999999998,
+              12.093
+            ],
+            "amount_sd": 1.2066671270717353
+          },
+          {
+            "stratum": 4,
+            "n": 10,
+            "value_mean": 22.215,
+            "amount_mean": 13.151999999999997,
+            "amount_ci": [
+              12.265825,
+              14.202050000000002
+            ],
+            "amount_sd": 1.6016297255538736
+          },
+          {
+            "stratum": 5,
+            "n": 10,
+            "value_mean": 27.911,
+            "amount_mean": 18.18,
+            "amount_ci": [
+              16.713949999999997,
+              19.378299999999996
+            ],
+            "amount_sd": 2.282829628139409
+          },
+          {
+            "stratum": 6,
+            "n": 10,
+            "value_mean": 32.354,
+            "amount_mean": 20.677,
+            "amount_ci": [
+              19.867900000000002,
+              21.367275
+            ],
+            "amount_sd": 1.3472857487886112
+          },
+          {
+            "stratum": 7,
+            "n": 10,
+            "value_mean": 36.266999999999996,
+            "amount_mean": 25.865000000000002,
+            "amount_ci": [
+              22.707325,
+              29.160624999999992
+            ],
+            "amount_sd": 5.497036070061351
+          },
+          {
+            "stratum": 8,
+            "n": 10,
+            "value_mean": 42.73,
+            "amount_mean": 29.076,
+            "amount_ci": [
+              27.180950000000003,
+              31.001299999999997
+            ],
+            "amount_sd": 3.3712351841226775
+          },
+          {
+            "stratum": 9,
+            "n": 10,
+            "value_mean": 47.108000000000004,
+            "amount_mean": 34.21999999999999,
+            "amount_ci": [
+              31.897949999999994,
+              36.496249999999996
+            ],
+            "amount_sd": 3.922292413599192
+          },
+          {
+            "stratum": 10,
+            "n": 10,
+            "value_mean": 51.725,
+            "amount_mean": 37.065999999999995,
+            "amount_ci": [
+              35.925925,
+              38.075
+            ],
+            "amount_sd": 1.9366247844008282
+          },
+          {
+            "stratum": 11,
+            "n": 10,
+            "value_mean": 57.614999999999995,
+            "amount_mean": 42.372,
+            "amount_ci": [
+              40.66994999999999,
+              43.924025
+            ],
+            "amount_sd": 2.7542807086828005
+          },
+          {
+            "stratum": 12,
+            "n": 10,
+            "value_mean": 63.126999999999995,
+            "amount_mean": 49.16,
+            "amount_ci": [
+              47.22387500000001,
+              51.098075
+            ],
+            "amount_sd": 3.3058365893606347
+          },
+          {
+            "stratum": 13,
+            "n": 10,
+            "value_mean": 67.24300000000001,
+            "amount_mean": 47.571,
+            "amount_ci": [
+              45.3108,
+              49.8441
+            ],
+            "amount_sd": 3.7296662049035976
+          },
+          {
+            "stratum": 14,
+            "n": 10,
+            "value_mean": 72.947,
+            "amount_mean": 52.836,
+            "amount_ci": [
+              51.55000000000001,
+              54.36315
+            ],
+            "amount_sd": 2.4267866270715532
+          },
+          {
+            "stratum": 15,
+            "n": 10,
+            "value_mean": 77.69200000000001,
+            "amount_mean": 54.312,
+            "amount_ci": [
+              52.70495,
+              56.213
+            ],
+            "amount_sd": 2.925602691944194
+          },
+          {
+            "stratum": 16,
+            "n": 10,
+            "value_mean": 82.188,
+            "amount_mean": 58.311,
+            "amount_ci": [
+              56.350749999999984,
+              60.19005
+            ],
+            "amount_sd": 3.281843824573145
+          },
+          {
+            "stratum": 17,
+            "n": 10,
+            "value_mean": 88.42999999999999,
+            "amount_mean": 60.422000000000004,
+            "amount_ci": [
+              56.49475,
+              64.40222500000002
+            ],
+            "amount_sd": 6.712768595909011
+          },
+          {
+            "stratum": 18,
+            "n": 10,
+            "value_mean": 92.04499999999999,
+            "amount_mean": 60.721000000000004,
+            "amount_ci": [
+              58.49595,
+              63.0343
+            ],
+            "amount_sd": 3.890493970350465
+          },
+          {
+            "stratum": 19,
+            "n": 10,
+            "value_mean": 97.763,
+            "amount_mean": 67.70000000000002,
+            "amount_ci": [
+              65.19255000000001,
+              70.24204999999999
+            ],
+            "amount_sd": 4.496443038669565
+          }
+        ]
+      },
+      "seller": {
+        "n": 200,
+        "intercept": 40.198874022775335,
+        "intercept_ci": [
+          38.66997202196362,
+          41.71324855881344
+        ],
+        "slope": 0.5606461895706686,
+        "slope_ci": [
+          0.5385787121851913,
+          0.582570207900015
+        ],
+        "resid_sd": 4.680117833591775,
+        "eq_intercept": 25.0,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 150,
+        "fit_trade_region": {
+          "intercept": 42.96260580004121,
+          "intercept_ci": [
+            41.10690166800581,
+            44.91618696363513
+          ],
+          "slope": 0.46344204089185276,
+          "slope_ci": [
+            0.42512132916675377,
+            0.49934266131065874
+          ],
+          "resid_sd": 4.558113943213199
+        },
+        "mean_abs_dev_from_eq": 9.922433333333334,
+        "mean_abs_dev_from_eq_trade_region": 10.407022222222222,
+        "share_at_eq_to_the_cent": 0.0,
+        "share_at_eq_trade_region": 0.0,
+        "share_at_k_half_formula": 0.0,
+        "share_at_k_half_formula_trade_region": 0.0,
+        "ir_violations": 0,
+        "ir_violation_share": 0.0,
+        "ir_violation_ci": [
+          0.0,
+          0.018846005918320894
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          0.0,
+          0.018846005918320894
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 0,
+        "recognised_by_name": 0,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 10,
+            "value_mean": 1.299,
+            "amount_mean": 43.946999999999996,
+            "amount_ci": [
+              39.3146,
+              48.330099999999995
+            ],
+            "amount_sd": 7.757167366736105
+          },
+          {
+            "stratum": 1,
+            "n": 10,
+            "value_mean": 7.827,
+            "amount_mean": 44.462,
+            "amount_ci": [
+              38.723600000000005,
+              50.18514999999999
+            ],
+            "amount_sd": 9.687580594646827
+          },
+          {
+            "stratum": 2,
+            "n": 10,
+            "value_mean": 11.909,
+            "amount_mean": 51.023999999999994,
+            "amount_ci": [
+              48.183949999999996,
+              53.53215
+            ],
+            "amount_sd": 4.654513221952789
+          },
+          {
+            "stratum": 3,
+            "n": 10,
+            "value_mean": 17.352,
+            "amount_mean": 51.67,
+            "amount_ci": [
+              49.38177499999999,
+              53.69202500000001
+            ],
+            "amount_sd": 3.7215647843943875
+          },
+          {
+            "stratum": 4,
+            "n": 10,
+            "value_mean": 22.188,
+            "amount_mean": 56.021,
+            "amount_ci": [
+              53.973,
+              58.201874999999994
+            ],
+            "amount_sd": 3.615548060498959
+          },
+          {
+            "stratum": 5,
+            "n": 10,
+            "value_mean": 27.566000000000003,
+            "amount_mean": 56.70700000000001,
+            "amount_ci": [
+              55.404700000000005,
+              57.9
+            ],
+            "amount_sd": 2.144978891375029
+          },
+          {
+            "stratum": 6,
+            "n": 10,
+            "value_mean": 32.249,
+            "amount_mean": 57.568999999999996,
+            "amount_ci": [
+              56.111650000000004,
+              59.12255
+            ],
+            "amount_sd": 2.596657894722026
+          },
+          {
+            "stratum": 7,
+            "n": 10,
+            "value_mean": 37.59100000000001,
+            "amount_mean": 57.94500000000001,
+            "amount_ci": [
+              56.331525000000006,
+              59.69232499999999
+            ],
+            "amount_sd": 2.9214655758901413
+          },
+          {
+            "stratum": 8,
+            "n": 10,
+            "value_mean": 42.757999999999996,
+            "amount_mean": 61.354000000000006,
+            "amount_ci": [
+              59.757825000000004,
+              63.043125
+            ],
+            "amount_sd": 2.8138909400014462
+          },
+          {
+            "stratum": 9,
+            "n": 10,
+            "value_mean": 47.126999999999995,
+            "amount_mean": 60.794999999999995,
+            "amount_ci": [
+              59.413,
+              62.2211
+            ],
+            "amount_sd": 2.4070832972707845
+          },
+          {
+            "stratum": 10,
+            "n": 10,
+            "value_mean": 52.084,
+            "amount_mean": 65.96900000000001,
+            "amount_ci": [
+              64.930975,
+              67.070225
+            ],
+            "amount_sd": 1.8060973887854934
+          },
+          {
+            "stratum": 11,
+            "n": 10,
+            "value_mean": 56.443,
+            "amount_mean": 67.65799999999999,
+            "amount_ci": [
+              66.8748,
+              68.425
+            ],
+            "amount_sd": 1.363694328734348
+          },
+          {
+            "stratum": 12,
+            "n": 10,
+            "value_mean": 62.31300000000001,
+            "amount_mean": 72.61699999999999,
+            "amount_ci": [
+              70.93894999999999,
+              74.13040000000001
+            ],
+            "amount_sd": 2.7371114133131074
+          },
+          {
+            "stratum": 13,
+            "n": 10,
+            "value_mean": 67.6,
+            "amount_mean": 75.986,
+            "amount_ci": [
+              74.68570000000001,
+              77.26435
+            ],
+            "amount_sd": 2.221862081928378
+          },
+          {
+            "stratum": 14,
+            "n": 10,
+            "value_mean": 72.959,
+            "amount_mean": 79.902,
+            "amount_ci": [
+              77.83197500000001,
+              82.148125
+            ],
+            "amount_sd": 3.769605932838191
+          },
+          {
+            "stratum": 15,
+            "n": 10,
+            "value_mean": 77.025,
+            "amount_mean": 84.318,
+            "amount_ci": [
+              83.004975,
+              85.211075
+            ],
+            "amount_sd": 1.8636809455125787
+          },
+          {
+            "stratum": 16,
+            "n": 10,
+            "value_mean": 83.31299999999999,
+            "amount_mean": 88.98,
+            "amount_ci": [
+              87.74879999999999,
+              90.228025
+            ],
+            "amount_sd": 2.1131861147460604
+          },
+          {
+            "stratum": 17,
+            "n": 10,
+            "value_mean": 87.66199999999999,
+            "amount_mean": 91.987,
+            "amount_ci": [
+              90.25197500000002,
+              93.19417499999999
+            ],
+            "amount_sd": 2.589169965666818
+          },
+          {
+            "stratum": 18,
+            "n": 10,
+            "value_mean": 93.386,
+            "amount_mean": 96.22599999999998,
+            "amount_ci": [
+              95.628975,
+              96.770025
+            ],
+            "amount_sd": 0.9753768502481479
+          },
+          {
+            "stratum": 19,
+            "n": 10,
+            "value_mean": 97.755,
+            "amount_mean": 98.59299999999999,
+            "amount_ci": [
+              98.075925,
+              99.10305000000001
+            ],
+            "amount_sd": 0.8992472160399241
+          }
+        ]
+      },
+      "efficiency": {
+        "efficiency": 0.44862908301805804,
+        "missed_share": 0.5513532882285398,
+        "bad_share": 1.7628753402059063e-05,
+        "buyer_payoff": 3.4220595,
+        "seller_payoff": 4.1107594999999995,
+        "gains": 7.532819,
+        "first_best": 16.7907505,
+        "trade_rate": 0.1159,
+        "efficiency_ci": [
+          0.4112684967700761,
+          0.4835246102569556
+        ],
+        "missed_share_ci": [
+          0.5164745123154546,
+          0.5887309447251362
+        ],
+        "bad_share_ci": [
+          0.0,
+          8.3357674445223e-05
+        ],
+        "buyer_payoff_ci": [
+          3.1257329937500002,
+          3.6942991843749997
+        ],
+        "seller_payoff_ci": [
+          3.7634226250000005,
+          4.43509615625
+        ],
+        "gains_ci": [
+          6.900245149999999,
+          8.117086875
+        ],
+        "first_best_ci": [
+          16.642437493750002,
+          16.9343411
+        ],
+        "trade_rate_ci": [
+          0.10437437499999999,
+          0.12682624999999997
+        ],
+        "eq_efficiency_same_draws": 0.8459906393106131,
+        "eq_trade_rate_same_draws": 0.283075,
+        "eq_efficiency_theory": 0.8437499999999999
+      },
+      "eq_payoffs": {
+        "buyer": 7.033342232098764,
+        "seller": 7.03370221234568,
+        "gains": 14.067044444444447,
+        "first_best": 16.66665925925926
+      },
+      "exploitability": {
+        "vs_model_buyer": {
+          "rival_br": 5.606971499999998,
+          "rival_br_ci": [
+            5.4341576937500005,
+            5.770082090624997
+          ],
+          "model_vs_br": 6.627489624999999,
+          "model_vs_br_ci": [
+            6.518051792187499,
+            6.740598373437499
+          ],
+          "rival_eq": 5.5776876875,
+          "rival_eq_ci": [
+            5.427001558854169,
+            5.72437824375
+          ],
+          "model_vs_eq": 6.670341812500002,
+          "model_vs_eq_ci": [
+            6.567064445312501,
+            6.768066936458335
+          ],
+          "br_gain_over_eq_play": 0.029283812499998518,
+          "br_gain_over_eq_play_ci": [
+            -0.059072943229167486,
+            0.12005421770833259
+          ],
+          "rival_br_in_sample": 5.779821937499999,
+          "br_gain_in_sample": 0.20213424999999852
+        },
+        "vs_model_seller": {
+          "rival_br": 4.555945125000001,
+          "rival_br_ci": [
+            4.396333896875,
+            4.720034223437501
+          ],
+          "model_vs_br": 7.351164937499999,
+          "model_vs_br_ci": [
+            7.202119649999998,
+            7.492127139062499
+          ],
+          "rival_eq": 4.275396979166667,
+          "rival_eq_ci": [
+            4.106528619270834,
+            4.453546450520833
+          ],
+          "model_vs_eq": 5.905767333333334,
+          "model_vs_eq_ci": [
+            5.753310577604167,
+            6.054627475
+          ],
+          "br_gain_over_eq_play": 0.28054814583333415,
+          "br_gain_over_eq_play_ci": [
+            0.21824817916666728,
+            0.34070890052083336
+          ],
+          "rival_br_in_sample": 4.649190250000002,
+          "br_gain_in_sample": 0.37379327083333536
+        }
+      }
+    },
+    "B": {
+      "label": "Flash, informed prompt",
+      "model": "gemini-3.8-flash",
+      "thinking_level": "low",
+      "prompt_version": "informed-v1",
+      "k": 0.5,
+      "invalid_replies": 0,
+      "buyer": {
+        "n": 80,
+        "intercept": 4.072280537205144,
+        "intercept_ci": [
+          2.1974536373352915,
+          5.8997415974679415
+        ],
+        "slope": 0.7257101769269415,
+        "slope_ci": [
+          0.7012045783367572,
+          0.7505989871127502
+        ],
+        "resid_sd": 4.155899076225322,
+        "eq_intercept": 8.333333333333334,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 60,
+        "fit_trade_region": {
+          "intercept": 8.333767562279018,
+          "intercept_ci": [
+            8.332097140833023,
+            8.335369812523316
+          ],
+          "slope": 0.6666596802709585,
+          "slope_ci": [
+            0.666634432026384,
+            0.6666845400278089
+          ],
+          "resid_sd": 0.0024711452042922412
+        },
+        "mean_abs_dev_from_eq": 1.3295833333333344,
+        "mean_abs_dev_from_eq_trade_region": 0.0017777777777788254,
+        "share_at_eq_to_the_cent": 0.9,
+        "share_at_eq_trade_region": 1.0,
+        "share_at_k_half_formula": 0.9,
+        "share_at_k_half_formula_trade_region": 1.0,
+        "ir_violations": 12,
+        "ir_violation_share": 0.15,
+        "ir_violation_ci": [
+          0.08793954037414209,
+          0.2441342750110605
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          -3.469446951953614e-18,
+          0.0458197362645751
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 80,
+        "recognised_by_name": 80,
+        "derivation_terms": 1,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 4,
+            "value_mean": 1.0675000000000001,
+            "amount_mean": 2.675,
+            "amount_ci": [
+              0.015,
+              7.455
+            ],
+            "amount_sd": 4.848742104917522
+          },
+          {
+            "stratum": 1,
+            "n": 4,
+            "value_mean": 8.015,
+            "amount_mean": 5.25,
+            "amount_ci": [
+              0.0,
+              11.0775
+            ],
+            "amount_sd": 6.993230059612416
+          },
+          {
+            "stratum": 2,
+            "n": 4,
+            "value_mean": 12.4825,
+            "amount_mean": 16.655,
+            "amount_ci": [
+              15.489999999999998,
+              17.945
+            ],
+            "amount_sd": 1.361506518530117
+          },
+          {
+            "stratum": 3,
+            "n": 4,
+            "value_mean": 17.18,
+            "amount_mean": 19.7875,
+            "amount_ci": [
+              18.795,
+              20.78
+            ],
+            "amount_sd": 1.2457226818196732
+          },
+          {
+            "stratum": 4,
+            "n": 4,
+            "value_mean": 22.475,
+            "amount_mean": 11.5525,
+            "amount_ci": [
+              0.0,
+              23.105
+            ],
+            "amount_sd": 13.343980852804009
+          },
+          {
+            "stratum": 5,
+            "n": 4,
+            "value_mean": 27.5575,
+            "amount_mean": 26.705000000000002,
+            "amount_ci": [
+              26.185000000000002,
+              27.125
+            ],
+            "amount_sd": 0.5814063409813591
+          },
+          {
+            "stratum": 6,
+            "n": 4,
+            "value_mean": 31.9225,
+            "amount_mean": 29.615,
+            "amount_ci": [
+              28.735,
+              30.495
+            ],
+            "amount_sd": 1.0739490987317166
+          },
+          {
+            "stratum": 7,
+            "n": 4,
+            "value_mean": 36.995,
+            "amount_mean": 32.9975,
+            "amount_ci": [
+              32.30499999999999,
+              33.5225
+            ],
+            "amount_sd": 0.6972027443051749
+          },
+          {
+            "stratum": 8,
+            "n": 4,
+            "value_mean": 42.5275,
+            "amount_mean": 36.684999999999995,
+            "amount_ci": [
+              35.790000000000006,
+              37.31
+            ],
+            "amount_sd": 0.8466994744299753
+          },
+          {
+            "stratum": 9,
+            "n": 4,
+            "value_mean": 47.12,
+            "amount_mean": 39.745,
+            "amount_ci": [
+              39.4325,
+              40.302499999999995
+            ],
+            "amount_sd": 0.551633936592013
+          },
+          {
+            "stratum": 10,
+            "n": 4,
+            "value_mean": 51.315,
+            "amount_mean": 42.542500000000004,
+            "amount_ci": [
+              41.805,
+              43.675000000000004
+            ],
+            "amount_sd": 1.1806318929567623
+          },
+          {
+            "stratum": 11,
+            "n": 4,
+            "value_mean": 56.55,
+            "amount_mean": 46.035,
+            "amount_ci": [
+              45.25,
+              46.82
+            ],
+            "amount_sd": 0.941435074766179
+          },
+          {
+            "stratum": 12,
+            "n": 4,
+            "value_mean": 62.065,
+            "amount_mean": 49.71,
+            "amount_ci": [
+              49.325,
+              50.26
+            ],
+            "amount_sd": 0.5447323501806495
+          },
+          {
+            "stratum": 13,
+            "n": 4,
+            "value_mean": 66.875,
+            "amount_mean": 52.9175,
+            "amount_ci": [
+              52.01,
+              53.825
+            ],
+            "amount_sd": 1.082724187716645
+          },
+          {
+            "stratum": 14,
+            "n": 4,
+            "value_mean": 73.5,
+            "amount_mean": 57.332499999999996,
+            "amount_ci": [
+              56.775000000000006,
+              57.9825
+            ],
+            "amount_sd": 0.7424452841792448
+          },
+          {
+            "stratum": 15,
+            "n": 4,
+            "value_mean": 78.11,
+            "amount_mean": 60.407500000000006,
+            "amount_ci": [
+              59.915,
+              60.790000000000006
+            ],
+            "amount_sd": 0.5471364851052555
+          },
+          {
+            "stratum": 16,
+            "n": 4,
+            "value_mean": 81.3025,
+            "amount_mean": 62.5375,
+            "amount_ci": [
+              61.985,
+              63.09
+            ],
+            "amount_sd": 0.6733683984268941
+          },
+          {
+            "stratum": 17,
+            "n": 4,
+            "value_mean": 88.08999999999999,
+            "amount_mean": 67.06,
+            "amount_ci": [
+              65.91749999999999,
+              68.16499999999999
+            ],
+            "amount_sd": 1.4216187955988773
+          },
+          {
+            "stratum": 18,
+            "n": 4,
+            "value_mean": 90.825,
+            "amount_mean": 68.8825,
+            "amount_ci": [
+              68.705,
+              69.06
+            ],
+            "amount_sd": 0.2140677462860753
+          },
+          {
+            "stratum": 19,
+            "n": 4,
+            "value_mean": 97.54750000000001,
+            "amount_mean": 73.3625,
+            "amount_ci": [
+              72.345,
+              74.38
+            ],
+            "amount_sd": 1.2770114852002457
+          }
+        ]
+      },
+      "seller": {
+        "n": 80,
+        "intercept": 23.963219490306916,
+        "intercept_ci": [
+          23.60351871895975,
+          24.381136105979078
+        ],
+        "slope": 0.7000391015915108,
+        "slope_ci": [
+          0.6864294219582878,
+          0.7117589327895966
+        ],
+        "resid_sd": 1.726961667167573,
+        "eq_intercept": 25.0,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 60,
+        "fit_trade_region": {
+          "intercept": 25.00031655049253,
+          "intercept_ci": [
+            24.99917129481635,
+            25.001502247438584
+          ],
+          "slope": 0.6666522240358355,
+          "slope_ci": [
+            0.6666251125446558,
+            0.6666806532456326
+          ],
+          "resid_sd": 0.002669471787948804
+        },
+        "mean_abs_dev_from_eq": 0.6342916666666685,
+        "mean_abs_dev_from_eq_trade_region": 0.002111111111113573,
+        "share_at_eq_to_the_cent": 0.8875,
+        "share_at_eq_trade_region": 1.0,
+        "share_at_k_half_formula": 0.8875,
+        "share_at_k_half_formula_trade_region": 1.0,
+        "ir_violations": 11,
+        "ir_violation_share": 0.1375,
+        "ir_violation_ci": [
+          0.07854633679551142,
+          0.22967297199630554
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          -3.469446951953614e-18,
+          0.0458197362645751
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 80,
+        "recognised_by_name": 80,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 4,
+            "value_mean": 0.8725,
+            "amount_mean": 25.5825,
+            "amount_ci": [
+              25.275,
+              26.037499999999998
+            ],
+            "amount_sd": 0.4499166589491875
+          },
+          {
+            "stratum": 1,
+            "n": 4,
+            "value_mean": 7.805,
+            "amount_mean": 30.2025,
+            "amount_ci": [
+              29.54,
+              30.87
+            ],
+            "amount_sd": 0.8414818278885562
+          },
+          {
+            "stratum": 2,
+            "n": 4,
+            "value_mean": 12.092500000000001,
+            "amount_mean": 33.0625,
+            "amount_ci": [
+              32.045,
+              34.08
+            ],
+            "amount_sd": 1.2216757616760152
+          },
+          {
+            "stratum": 3,
+            "n": 4,
+            "value_mean": 17.880000000000003,
+            "amount_mean": 36.92,
+            "amount_ci": [
+              36.04,
+              37.8
+            ],
+            "amount_sd": 1.0887607634370384
+          },
+          {
+            "stratum": 4,
+            "n": 4,
+            "value_mean": 22.072499999999998,
+            "amount_mean": 39.715,
+            "amount_ci": [
+              38.8525,
+              40.4075
+            ],
+            "amount_sd": 0.8846279820730664
+          },
+          {
+            "stratum": 5,
+            "n": 4,
+            "value_mean": 27.267500000000002,
+            "amount_mean": 43.18000000000001,
+            "amount_ci": [
+              42.945,
+              43.455
+            ],
+            "amount_sd": 0.2905167809266801
+          },
+          {
+            "stratum": 6,
+            "n": 4,
+            "value_mean": 32.2,
+            "amount_mean": 46.465,
+            "amount_ci": [
+              45.815,
+              47.105000000000004
+            ],
+            "amount_sd": 0.8152913589631638
+          },
+          {
+            "stratum": 7,
+            "n": 4,
+            "value_mean": 37.6075,
+            "amount_mean": 50.072500000000005,
+            "amount_ci": [
+              49.37,
+              50.9925
+            ],
+            "amount_sd": 0.9746238590690602
+          },
+          {
+            "stratum": 8,
+            "n": 4,
+            "value_mean": 42.965,
+            "amount_mean": 53.6425,
+            "amount_ci": [
+              52.665,
+              54.62
+            ],
+            "amount_sd": 1.2288036187012696
+          },
+          {
+            "stratum": 9,
+            "n": 4,
+            "value_mean": 46.802499999999995,
+            "amount_mean": 56.2,
+            "amount_ci": [
+              56.035,
+              56.370000000000005
+            ],
+            "amount_sd": 0.2070426687102608
+          },
+          {
+            "stratum": 10,
+            "n": 4,
+            "value_mean": 52.445,
+            "amount_mean": 59.9625,
+            "amount_ci": [
+              59.254999999999995,
+              60.68
+            ],
+            "amount_sd": 0.9012352634024053
+          },
+          {
+            "stratum": 11,
+            "n": 4,
+            "value_mean": 56.5175,
+            "amount_mean": 62.6775,
+            "amount_ci": [
+              62.205,
+              63.150000000000006
+            ],
+            "amount_sd": 0.5878420989801032
+          },
+          {
+            "stratum": 12,
+            "n": 4,
+            "value_mean": 62.3075,
+            "amount_mean": 66.5375,
+            "amount_ci": [
+              66.0175,
+              66.97
+            ],
+            "amount_sd": 0.5750000000000011
+          },
+          {
+            "stratum": 13,
+            "n": 4,
+            "value_mean": 68.295,
+            "amount_mean": 70.53,
+            "amount_ci": [
+              69.75,
+              71.31
+            ],
+            "amount_sd": 0.9613878856458873
+          },
+          {
+            "stratum": 14,
+            "n": 4,
+            "value_mean": 72.435,
+            "amount_mean": 73.28999999999999,
+            "amount_ci": [
+              72.82,
+              73.75999999999999
+            ],
+            "amount_sd": 0.5774657276987676
+          },
+          {
+            "stratum": 15,
+            "n": 4,
+            "value_mean": 76.0125,
+            "amount_mean": 75.685,
+            "amount_ci": [
+              75.145,
+              76.665
+            ],
+            "amount_sd": 0.9794726472274129
+          },
+          {
+            "stratum": 16,
+            "n": 4,
+            "value_mean": 83.9575,
+            "amount_mean": 81.7525,
+            "amount_ci": [
+              80.4825,
+              83.4825
+            ],
+            "amount_sd": 1.8073438152899022
+          },
+          {
+            "stratum": 17,
+            "n": 4,
+            "value_mean": 88.265,
+            "amount_mean": 85.0,
+            "amount_ci": [
+              82.71000000000001,
+              87.78
+            ],
+            "amount_sd": 2.833584302610388
+          },
+          {
+            "stratum": 18,
+            "n": 4,
+            "value_mean": 93.485,
+            "amount_mean": 92.04249999999999,
+            "amount_ci": [
+              88.435,
+              94.265
+            ],
+            "amount_sd": 3.7163008041151167
+          },
+          {
+            "stratum": 19,
+            "n": 4,
+            "value_mean": 98.935,
+            "amount_mean": 96.9375,
+            "amount_ci": [
+              92.9825,
+              99.18
+            ],
+            "amount_sd": 3.9860621754642382
+          }
+        ]
+      },
+      "efficiency": {
+        "efficiency": 0.8424542524668008,
+        "missed_share": 0.15754574753319908,
+        "bad_share": 0.0,
+        "buyer_payoff": 6.963457812500001,
+        "seller_payoff": 7.034467187500001,
+        "gains": 13.997925,
+        "first_best": 16.615650000000002,
+        "trade_rate": 0.27921875,
+        "efficiency_ci": [
+          0.8383404504159534,
+          0.8463786567866498
+        ],
+        "missed_share_ci": [
+          0.15362134321335028,
+          0.16165954958404677
+        ],
+        "bad_share_ci": [
+          0.0,
+          0.0
+        ],
+        "buyer_payoff_ci": [
+          6.849285566406251,
+          7.08312857421875
+        ],
+        "seller_payoff_ci": [
+          6.92198357421875,
+          7.145248574218749
+        ],
+        "gains_ci": [
+          13.78688984375,
+          14.211670117187499
+        ],
+        "first_best_ci": [
+          16.410947851562504,
+          16.8183887109375
+        ],
+        "trade_rate_ci": [
+          0.275625,
+          0.2828125
+        ],
+        "eq_efficiency_same_draws": 0.8424542524668008,
+        "eq_trade_rate_same_draws": 0.27921875,
+        "eq_efficiency_theory": 0.8437499999999999
+      },
+      "eq_payoffs": {
+        "buyer": 7.033342232098764,
+        "seller": 7.03370221234568,
+        "gains": 14.067044444444447,
+        "first_best": 16.66665925925926
+      },
+      "exploitability": {
+        "vs_model_buyer": {
+          "rival_br": 6.933693437499997,
+          "rival_br_ci": [
+            6.841009164062496,
+            7.019357124999994
+          ],
+          "model_vs_br": 6.687191406249992,
+          "model_vs_br_ci": [
+            6.558570300781243,
+            6.81661812499999
+          ],
+          "rival_eq": 6.967908333333331,
+          "rival_eq_ci": [
+            6.9147330976562476,
+            7.020699885416665
+          ],
+          "model_vs_eq": 6.938118854166667,
+          "model_vs_eq_ci": [
+            6.842262834635417,
+            7.037667933593752
+          ],
+          "br_gain_over_eq_play": -0.034214895833333724,
+          "br_gain_over_eq_play_ci": [
+            -0.10179993229167024,
+            0.028929466145832295
+          ],
+          "rival_br_in_sample": 7.110753125000002,
+          "br_gain_in_sample": 0.14284479166667108
+        },
+        "vs_model_seller": {
+          "rival_br": 6.995735156250001,
+          "rival_br_ci": [
+            6.867159531249999,
+            7.123914832031251
+          ],
+          "model_vs_br": 6.772976562500001,
+          "model_vs_br_ci": [
+            6.6501613554687475,
+            6.904846078125001
+          ],
+          "rival_eq": 7.066133281250001,
+          "rival_eq_ci": [
+            7.0170344765624995,
+            7.113617531250001
+          ],
+          "model_vs_eq": 7.110667500000003,
+          "model_vs_eq_ci": [
+            7.021794720052086,
+            7.199975546875002
+          ],
+          "br_gain_over_eq_play": -0.07039812499999921,
+          "br_gain_over_eq_play_ci": [
+            -0.1867540143229156,
+            0.05044025651041817
+          ],
+          "rival_br_in_sample": 7.254732187499999,
+          "br_gain_in_sample": 0.18859890624999842
+        }
+      }
+    },
+    "C": {
+      "label": "Flash-Lite, shopping-assistant prompt",
+      "model": "gemini-3.5-flash-lite",
+      "thinking_level": "minimal",
+      "prompt_version": "shopper-v1",
+      "k": 0.5,
+      "invalid_replies": 0,
+      "buyer": {
+        "n": 200,
+        "intercept": -1.5070380473163667,
+        "intercept_ci": [
+          -2.2556254337734223,
+          -0.7237174933579875
+        ],
+        "slope": 0.6121049926467581,
+        "slope_ci": [
+          0.5883269277633713,
+          0.6339025311115022
+        ],
+        "resid_sd": 4.64367524777657,
+        "eq_intercept": 8.333333333333334,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 150,
+        "fit_trade_region": {
+          "intercept": -1.610381358756689,
+          "intercept_ci": [
+            -3.6504329680568586,
+            0.3012244788223289
+          ],
+          "slope": 0.6140658280003098,
+          "slope_ci": [
+            0.5770004711611928,
+            0.6518948386968992
+          ],
+          "resid_sd": 5.325340228531016
+        },
+        "mean_abs_dev_from_eq": 12.566141666666667,
+        "mean_abs_dev_from_eq_trade_region": 13.230022222222225,
+        "share_at_eq_to_the_cent": 0.0,
+        "share_at_eq_trade_region": 0.0,
+        "share_at_k_half_formula": 0.0,
+        "share_at_k_half_formula_trade_region": 0.0,
+        "ir_violations": 0,
+        "ir_violation_share": 0.0,
+        "ir_violation_ci": [
+          0.0,
+          0.018846005918320894
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          0.0,
+          0.018846005918320894
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 0,
+        "recognised_by_name": 0,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 10,
+            "value_mean": 1.7890000000000001,
+            "amount_mean": 0.7881666666666668,
+            "amount_ci": [
+              0.3409333333333335,
+              1.2885041666666666
+            ],
+            "amount_sd": 0.8163141529437649
+          },
+          {
+            "stratum": 1,
+            "n": 10,
+            "value_mean": 8.223,
+            "amount_mean": 3.9405,
+            "amount_ci": [
+              3.3929375,
+              4.3990374999999995
+            ],
+            "amount_sd": 0.8552077395450638
+          },
+          {
+            "stratum": 2,
+            "n": 10,
+            "value_mean": 11.880999999999998,
+            "amount_mean": 5.9415,
+            "amount_ci": [
+              5.433437499999999,
+              6.481512499999999
+            ],
+            "amount_sd": 0.9115373156255193
+          },
+          {
+            "stratum": 3,
+            "n": 10,
+            "value_mean": 17.898999999999997,
+            "amount_mean": 7.962000000000001,
+            "amount_ci": [
+              6.796875,
+              8.95725
+            ],
+            "amount_sd": 1.8270242958914855
+          },
+          {
+            "stratum": 4,
+            "n": 10,
+            "value_mean": 22.215,
+            "amount_mean": 11.5,
+            "amount_ci": [
+              10.7604125,
+              12.5416375
+            ],
+            "amount_sd": 1.5919013788548586
+          },
+          {
+            "stratum": 5,
+            "n": 10,
+            "value_mean": 27.911,
+            "amount_mean": 14.872,
+            "amount_ci": [
+              13.864975,
+              16.022049999999997
+            ],
+            "amount_sd": 1.9120541600883363
+          },
+          {
+            "stratum": 6,
+            "n": 10,
+            "value_mean": 32.354,
+            "amount_mean": 16.735,
+            "amount_ci": [
+              15.7529,
+              18.138524999999994
+            ],
+            "amount_sd": 2.1027614119427707
+          },
+          {
+            "stratum": 7,
+            "n": 10,
+            "value_mean": 36.266999999999996,
+            "amount_mean": 19.952,
+            "amount_ci": [
+              18.2591875,
+              21.8211125
+            ],
+            "amount_sd": 3.01374093850889
+          },
+          {
+            "stratum": 8,
+            "n": 10,
+            "value_mean": 42.73,
+            "amount_mean": 24.951,
+            "amount_ci": [
+              22.887774999999998,
+              27.141474999999996
+            ],
+            "amount_sd": 3.5326491475944795
+          },
+          {
+            "stratum": 9,
+            "n": 10,
+            "value_mean": 47.108000000000004,
+            "amount_mean": 29.0945,
+            "amount_ci": [
+              26.489925000000003,
+              31.537374999999997
+            ],
+            "amount_sd": 4.1411702921866045
+          },
+          {
+            "stratum": 10,
+            "n": 10,
+            "value_mean": 51.725,
+            "amount_mean": 30.996500000000005,
+            "amount_ci": [
+              28.417937500000004,
+              33.3802625
+            ],
+            "amount_sd": 4.27924711057136
+          },
+          {
+            "stratum": 11,
+            "n": 10,
+            "value_mean": 57.614999999999995,
+            "amount_mean": 35.5375,
+            "amount_ci": [
+              32.506150000000005,
+              38.109225
+            ],
+            "amount_sd": 4.765477270023551
+          },
+          {
+            "stratum": 12,
+            "n": 10,
+            "value_mean": 63.126999999999995,
+            "amount_mean": 37.6005,
+            "amount_ci": [
+              34.84345,
+              40.266099999999994
+            ],
+            "amount_sd": 4.654418718928403
+          },
+          {
+            "stratum": 13,
+            "n": 10,
+            "value_mean": 67.24300000000001,
+            "amount_mean": 36.65650000000001,
+            "amount_ci": [
+              33.990975,
+              39.74566250000001
+            ],
+            "amount_sd": 4.638359414227788
+          },
+          {
+            "stratum": 14,
+            "n": 10,
+            "value_mean": 72.947,
+            "amount_mean": 42.019,
+            "amount_ci": [
+              37.5230625,
+              46.5770875
+            ],
+            "amount_sd": 7.773347913079523
+          },
+          {
+            "stratum": 15,
+            "n": 10,
+            "value_mean": 77.69200000000001,
+            "amount_mean": 49.38,
+            "amount_ci": [
+              46.032925,
+              51.842099999999995
+            ],
+            "amount_sd": 4.974622263716782
+          },
+          {
+            "stratum": 16,
+            "n": 10,
+            "value_mean": 82.188,
+            "amount_mean": 49.233,
+            "amount_ci": [
+              45.39149999999999,
+              53.03105000000001
+            ],
+            "amount_sd": 6.518561190937769
+          },
+          {
+            "stratum": 17,
+            "n": 10,
+            "value_mean": 88.42999999999999,
+            "amount_mean": 54.08050000000001,
+            "amount_ci": [
+              50.355000000000004,
+              57.603049999999996
+            ],
+            "amount_sd": 6.238018047959356
+          },
+          {
+            "stratum": 18,
+            "n": 10,
+            "value_mean": 92.04499999999999,
+            "amount_mean": 52.92999999999999,
+            "amount_ci": [
+              48.48494999999999,
+              57.209
+            ],
+            "amount_sd": 7.537422194181069
+          },
+          {
+            "stratum": 19,
+            "n": 10,
+            "value_mean": 97.763,
+            "amount_mean": 57.27500000000001,
+            "amount_ci": [
+              52.250425,
+              62.3121375
+            ],
+            "amount_sd": 8.62854178487497
+          }
+        ]
+      },
+      "seller": {
+        "n": 200,
+        "intercept": 54.46594348438117,
+        "intercept_ci": [
+          53.14002511662637,
+          55.66732870094658
+        ],
+        "slope": 0.17947671619799588,
+        "slope_ci": [
+          0.15583169838024952,
+          0.20395162953587884
+        ],
+        "resid_sd": 6.76364999475018,
+        "eq_intercept": 25.0,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 150,
+        "fit_trade_region": {
+          "intercept": 51.153477607986225,
+          "intercept_ci": [
+            49.73053744892264,
+            52.58421407853252
+          ],
+          "slope": 0.2964566634425657,
+          "slope_ci": [
+            0.2605118290661952,
+            0.33367118762116554
+          ],
+          "resid_sd": 5.99042256973231
+        },
+        "mean_abs_dev_from_eq": 15.004475,
+        "mean_abs_dev_from_eq_trade_region": 14.185533333333332,
+        "share_at_eq_to_the_cent": 0.0,
+        "share_at_eq_trade_region": 0.0,
+        "share_at_k_half_formula": 0.0,
+        "share_at_k_half_formula_trade_region": 0.0,
+        "ir_violations": 60,
+        "ir_violation_share": 0.3,
+        "ir_violation_ci": [
+          0.24074644243406385,
+          0.3667919599332645
+        ],
+        "ir_binding": 60,
+        "ir_binding_share": 0.3,
+        "ir_binding_ci": [
+          0.24074644243406385,
+          0.3667919599332645
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 0,
+        "recognised_by_name": 0,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 10,
+            "value_mean": 1.299,
+            "amount_mean": 50.65,
+            "amount_ci": [
+              50.366462500000004,
+              51.038675
+            ],
+            "amount_sd": 0.6085182367394133
+          },
+          {
+            "stratum": 1,
+            "n": 10,
+            "value_mean": 7.827,
+            "amount_mean": 50.35,
+            "amount_ci": [
+              45.469975,
+              53.80409999999999
+            ],
+            "amount_sd": 7.101960605666893
+          },
+          {
+            "stratum": 2,
+            "n": 10,
+            "value_mean": 11.909,
+            "amount_mean": 53.23299999999999,
+            "amount_ci": [
+              49.554899999999996,
+              55.790099999999995
+            ],
+            "amount_sd": 5.594592726711906
+          },
+          {
+            "stratum": 3,
+            "n": 10,
+            "value_mean": 17.352,
+            "amount_mean": 58.7,
+            "amount_ci": [
+              58.270925,
+              59.116
+            ],
+            "amount_sd": 0.7067177654481315
+          },
+          {
+            "stratum": 4,
+            "n": 10,
+            "value_mean": 22.188,
+            "amount_mean": 58.532,
+            "amount_ci": [
+              56.0276625,
+              60.467499999999994
+            ],
+            "amount_sd": 3.8201499388840165
+          },
+          {
+            "stratum": 5,
+            "n": 10,
+            "value_mean": 27.566000000000003,
+            "amount_mean": 56.528999999999996,
+            "amount_ci": [
+              53.10875,
+              60.01732499999999
+            ],
+            "amount_sd": 5.963642529714724
+          },
+          {
+            "stratum": 6,
+            "n": 10,
+            "value_mean": 32.249,
+            "amount_mean": 61.45400000000001,
+            "amount_ci": [
+              57.405475,
+              65.11784999999999
+            ],
+            "amount_sd": 6.466410991509209
+          },
+          {
+            "stratum": 7,
+            "n": 10,
+            "value_mean": 37.59100000000001,
+            "amount_mean": 65.66350000000001,
+            "amount_ci": [
+              63.585300000000004,
+              67.61215
+            ],
+            "amount_sd": 3.4083557863971117
+          },
+          {
+            "stratum": 8,
+            "n": 10,
+            "value_mean": 42.757999999999996,
+            "amount_mean": 61.405499999999996,
+            "amount_ci": [
+              57.40636249999999,
+              64.6461
+            ],
+            "amount_sd": 6.170850135021015
+          },
+          {
+            "stratum": 9,
+            "n": 10,
+            "value_mean": 47.126999999999995,
+            "amount_mean": 68.04499999999999,
+            "amount_ci": [
+              65.1998,
+              71.1023
+            ],
+            "amount_sd": 5.087058198125033
+          },
+          {
+            "stratum": 10,
+            "n": 10,
+            "value_mean": 52.084,
+            "amount_mean": 69.686,
+            "amount_ci": [
+              66.26652500000002,
+              73.1879
+            ],
+            "amount_sd": 5.893541097393542
+          },
+          {
+            "stratum": 11,
+            "n": 10,
+            "value_mean": 56.443,
+            "amount_mean": 72.94399999999999,
+            "amount_ci": [
+              70.582525,
+              75.2901
+            ],
+            "amount_sd": 4.008070192332797
+          },
+          {
+            "stratum": 12,
+            "n": 10,
+            "value_mean": 62.31300000000001,
+            "amount_mean": 71.33600000000001,
+            "amount_ci": [
+              69.018775,
+              73.79307499999999
+            ],
+            "amount_sd": 4.032730533466816
+          },
+          {
+            "stratum": 13,
+            "n": 10,
+            "value_mean": 67.6,
+            "amount_mean": 70.355,
+            "amount_ci": [
+              66.305875,
+              74.58109999999999
+            ],
+            "amount_sd": 6.954886771184701
+          },
+          {
+            "stratum": 14,
+            "n": 10,
+            "value_mean": 72.959,
+            "amount_mean": 64.21700000000001,
+            "amount_ci": [
+              61.863,
+              68.59799999999998
+            ],
+            "amount_sd": 6.803348930245064
+          },
+          {
+            "stratum": 15,
+            "n": 10,
+            "value_mean": 77.025,
+            "amount_mean": 67.404,
+            "amount_ci": [
+              61.92684999999999,
+              74.8081
+            ],
+            "amount_sd": 10.871874212337488
+          },
+          {
+            "stratum": 16,
+            "n": 10,
+            "value_mean": 83.31299999999999,
+            "amount_mean": 65.34899999999999,
+            "amount_ci": [
+              63.734874999999995,
+              66.50904999999999
+            ],
+            "amount_sd": 2.318440328228344
+          },
+          {
+            "stratum": 17,
+            "n": 10,
+            "value_mean": 87.66199999999999,
+            "amount_mean": 65.7985,
+            "amount_ci": [
+              62.6103375,
+              69.28419999999998
+            ],
+            "amount_sd": 5.57577102291692
+          },
+          {
+            "stratum": 18,
+            "n": 10,
+            "value_mean": 93.386,
+            "amount_mean": 69.81700000000001,
+            "amount_ci": [
+              66.96772499999999,
+              72.53805000000001
+            ],
+            "amount_sd": 4.720958118386092
+          },
+          {
+            "stratum": 19,
+            "n": 10,
+            "value_mean": 97.755,
+            "amount_mean": 67.041,
+            "amount_ci": [
+              63.00619999999999,
+              70.3237
+            ],
+            "amount_sd": 6.315245134680924
+          }
+        ]
+      },
+      "efficiency": {
+        "efficiency": 0.16770834633032036,
+        "missed_share": 0.8318391872954098,
+        "bad_share": 0.00045246637426957204,
+        "buyer_payoff": 1.458503625,
+        "seller_payoff": 1.357445375,
+        "gains": 2.815949,
+        "first_best": 16.7907505,
+        "trade_rate": 0.0436,
+        "efficiency_ci": [
+          0.11955978726520847,
+          0.21377808657508482
+        ],
+        "missed_share_ci": [
+          0.7853149578006265,
+          0.8799372592238208
+        ],
+        "bad_share_ci": [
+          0.0,
+          0.001483027695201045
+        ],
+        "buyer_payoff_ci": [
+          1.0206637265625003,
+          1.8936268296874992
+        ],
+        "seller_payoff_ci": [
+          0.9913349812500001,
+          1.7169028156249997
+        ],
+        "gains_ci": [
+          2.00719210625,
+          3.588945499999999
+        ],
+        "first_best_ci": [
+          16.64091219375,
+          16.9469661375
+        ],
+        "trade_rate_ci": [
+          0.030923125000000003,
+          0.056500625
+        ],
+        "eq_efficiency_same_draws": 0.8459906393106131,
+        "eq_trade_rate_same_draws": 0.283075,
+        "eq_efficiency_theory": 0.8437499999999999
+      },
+      "eq_payoffs": {
+        "buyer": 7.033342232098764,
+        "seller": 7.03370221234568,
+        "gains": 14.067044444444447,
+        "first_best": 16.66665925925926
+      },
+      "exploitability": {
+        "vs_model_buyer": {
+          "rival_br": 3.9144372500000006,
+          "rival_br_ci": [
+            3.7122619492187523,
+            4.1177395046875
+          ],
+          "model_vs_br": 6.778897749999999,
+          "model_vs_br_ci": [
+            6.563255949218747,
+            6.983528046874998
+          ],
+          "rival_eq": 3.785153708333333,
+          "rival_eq_ci": [
+            3.561684084375001,
+            4.007097307291668
+          ],
+          "model_vs_eq": 5.584276791666668,
+          "model_vs_eq_ci": [
+            5.376119415625002,
+            5.789555205208335
+          ],
+          "br_gain_over_eq_play": 0.12928354166666736,
+          "br_gain_over_eq_play_ci": [
+            0.07251531458333328,
+            0.18937124817708453
+          ],
+          "rival_br_in_sample": 4.02240621875,
+          "br_gain_in_sample": 0.2372525104166665
+        },
+        "vs_model_seller": {
+          "rival_br": 5.2263167500000005,
+          "rival_br_ci": [
+            5.006296246875,
+            5.436565203906251
+          ],
+          "model_vs_br": 6.099019624999999,
+          "model_vs_br_ci": [
+            5.846485700000001,
+            6.352672620312498
+          ],
+          "rival_eq": 4.44924675,
+          "rival_eq_ci": [
+            4.223683254166667,
+            4.6855968338541665
+          ],
+          "model_vs_eq": 4.367591437499999,
+          "model_vs_eq_ci": [
+            4.149877259375,
+            4.596152933072916
+          ],
+          "br_gain_over_eq_play": 0.77707,
+          "br_gain_over_eq_play_ci": [
+            0.6906648562500004,
+            0.8650377070312492
+          ],
+          "rival_br_in_sample": 5.328539312499998,
+          "br_gain_in_sample": 0.8792925624999972
+        }
+      }
+    },
+    "D": {
+      "label": "Flash, shopping-assistant prompt",
+      "model": "gemini-3.8-flash",
+      "thinking_level": "low",
+      "prompt_version": "shopper-v1",
+      "k": 0.5,
+      "invalid_replies": 0,
+      "buyer": {
+        "n": 80,
+        "intercept": 5.274310827225852,
+        "intercept_ci": [
+          4.543966051645851,
+          6.002644175956153
+        ],
+        "slope": 0.7114698292746094,
+        "slope_ci": [
+          0.7009971645194986,
+          0.721989995720713
+        ],
+        "resid_sd": 2.1668012072138123,
+        "eq_intercept": 8.333333333333334,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 60,
+        "fit_trade_region": {
+          "intercept": 8.333767562279018,
+          "intercept_ci": [
+            8.332044416331996,
+            8.335351988441875
+          ],
+          "slope": 0.6666596802709585,
+          "slope_ci": [
+            0.666634698733205,
+            0.6666858552478924
+          ],
+          "resid_sd": 0.0024711452042922412
+        },
+        "mean_abs_dev_from_eq": 0.8349583333333342,
+        "mean_abs_dev_from_eq_trade_region": 0.0017777777777788254,
+        "share_at_eq_to_the_cent": 0.9,
+        "share_at_eq_trade_region": 1.0,
+        "share_at_k_half_formula": 0.9,
+        "share_at_k_half_formula_trade_region": 1.0,
+        "ir_violations": 12,
+        "ir_violation_share": 0.15,
+        "ir_violation_ci": [
+          0.08793954037414209,
+          0.2441342750110605
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          -3.469446951953614e-18,
+          0.0458197362645751
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 80,
+        "recognised_by_name": 80,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 4,
+            "value_mean": 1.0675000000000001,
+            "amount_mean": 0.71,
+            "amount_ci": [
+              0.20750000000000002,
+              1.3175000000000001
+            ],
+            "amount_sd": 0.6615638039272301
+          },
+          {
+            "stratum": 1,
+            "n": 4,
+            "value_mean": 8.015,
+            "amount_mean": 7.4275,
+            "amount_ci": [
+              4.115,
+              11.8325
+            ],
+            "amount_sd": 4.414411059246748
+          },
+          {
+            "stratum": 2,
+            "n": 4,
+            "value_mean": 12.4825,
+            "amount_mean": 14.572500000000002,
+            "amount_ci": [
+              9.7175,
+              17.82
+            ],
+            "amount_sd": 5.099388035179647
+          },
+          {
+            "stratum": 3,
+            "n": 4,
+            "value_mean": 17.18,
+            "amount_mean": 19.7875,
+            "amount_ci": [
+              18.795,
+              20.78
+            ],
+            "amount_sd": 1.2457226818196732
+          },
+          {
+            "stratum": 4,
+            "n": 4,
+            "value_mean": 22.475,
+            "amount_mean": 23.314999999999998,
+            "amount_ci": [
+              22.415,
+              24.355
+            ],
+            "amount_sd": 1.2051694210082382
+          },
+          {
+            "stratum": 5,
+            "n": 4,
+            "value_mean": 27.5575,
+            "amount_mean": 26.705000000000002,
+            "amount_ci": [
+              26.185000000000002,
+              27.125
+            ],
+            "amount_sd": 0.5814063409813591
+          },
+          {
+            "stratum": 6,
+            "n": 4,
+            "value_mean": 31.9225,
+            "amount_mean": 29.615,
+            "amount_ci": [
+              28.735,
+              30.494999999999997
+            ],
+            "amount_sd": 1.0739490987317166
+          },
+          {
+            "stratum": 7,
+            "n": 4,
+            "value_mean": 36.995,
+            "amount_mean": 32.9975,
+            "amount_ci": [
+              32.30499999999999,
+              33.5225
+            ],
+            "amount_sd": 0.6972027443051749
+          },
+          {
+            "stratum": 8,
+            "n": 4,
+            "value_mean": 42.5275,
+            "amount_mean": 36.684999999999995,
+            "amount_ci": [
+              35.955000000000005,
+              37.31
+            ],
+            "amount_sd": 0.8466994744299753
+          },
+          {
+            "stratum": 9,
+            "n": 4,
+            "value_mean": 47.12,
+            "amount_mean": 39.745,
+            "amount_ci": [
+              39.4325,
+              40.302499999999995
+            ],
+            "amount_sd": 0.551633936592013
+          },
+          {
+            "stratum": 10,
+            "n": 4,
+            "value_mean": 51.315,
+            "amount_mean": 42.542500000000004,
+            "amount_ci": [
+              41.805,
+              43.675000000000004
+            ],
+            "amount_sd": 1.1806318929567623
+          },
+          {
+            "stratum": 11,
+            "n": 4,
+            "value_mean": 56.55,
+            "amount_mean": 46.035,
+            "amount_ci": [
+              45.25,
+              46.975
+            ],
+            "amount_sd": 0.941435074766179
+          },
+          {
+            "stratum": 12,
+            "n": 4,
+            "value_mean": 62.065,
+            "amount_mean": 49.71,
+            "amount_ci": [
+              49.325,
+              50.26
+            ],
+            "amount_sd": 0.5447323501806495
+          },
+          {
+            "stratum": 13,
+            "n": 4,
+            "value_mean": 66.875,
+            "amount_mean": 52.9175,
+            "amount_ci": [
+              52.01,
+              53.825
+            ],
+            "amount_sd": 1.082724187716645
+          },
+          {
+            "stratum": 14,
+            "n": 4,
+            "value_mean": 73.5,
+            "amount_mean": 57.332499999999996,
+            "amount_ci": [
+              56.77499999999999,
+              57.9825
+            ],
+            "amount_sd": 0.7424452841792448
+          },
+          {
+            "stratum": 15,
+            "n": 4,
+            "value_mean": 78.11,
+            "amount_mean": 60.407500000000006,
+            "amount_ci": [
+              59.915,
+              60.790000000000006
+            ],
+            "amount_sd": 0.5471364851052555
+          },
+          {
+            "stratum": 16,
+            "n": 4,
+            "value_mean": 81.3025,
+            "amount_mean": 62.5375,
+            "amount_ci": [
+              61.985,
+              63.09
+            ],
+            "amount_sd": 0.6733683984268941
+          },
+          {
+            "stratum": 17,
+            "n": 4,
+            "value_mean": 88.08999999999999,
+            "amount_mean": 67.06,
+            "amount_ci": [
+              65.91749999999999,
+              68.16499999999999
+            ],
+            "amount_sd": 1.4216187955988773
+          },
+          {
+            "stratum": 18,
+            "n": 4,
+            "value_mean": 90.825,
+            "amount_mean": 68.8825,
+            "amount_ci": [
+              68.705,
+              69.06
+            ],
+            "amount_sd": 0.2140677462860753
+          },
+          {
+            "stratum": 19,
+            "n": 4,
+            "value_mean": 97.54750000000001,
+            "amount_mean": 73.3625,
+            "amount_ci": [
+              72.345,
+              74.66499999999999
+            ],
+            "amount_sd": 1.2770114852002457
+          }
+        ]
+      },
+      "seller": {
+        "n": 80,
+        "intercept": 24.341113068747692,
+        "intercept_ci": [
+          23.90337218909284,
+          24.72684253914481
+        ],
+        "slope": 0.6879788832707259,
+        "slope_ci": [
+          0.6759029292594254,
+          0.7021006320932641
+        ],
+        "resid_sd": 1.4817707200306265,
+        "eq_intercept": 25.0,
+        "eq_slope": 0.6666666666666666,
+        "n_trade_region": 60,
+        "fit_trade_region": {
+          "intercept": 25.00031655049253,
+          "intercept_ci": [
+            24.999164045459388,
+            25.001474181382154
+          ],
+          "slope": 0.6666522240358355,
+          "slope_ci": [
+            0.6666250744340455,
+            0.6666790135041093
+          ],
+          "resid_sd": 0.002669471787948804
+        },
+        "mean_abs_dev_from_eq": 0.409208333333335,
+        "mean_abs_dev_from_eq_trade_region": 0.002111111111113573,
+        "share_at_eq_to_the_cent": 0.925,
+        "share_at_eq_trade_region": 1.0,
+        "share_at_k_half_formula": 0.925,
+        "share_at_k_half_formula_trade_region": 1.0,
+        "ir_violations": 14,
+        "ir_violation_share": 0.175,
+        "ir_violation_ci": [
+          0.10720538981609888,
+          0.2725774387558749
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          -3.469446951953614e-18,
+          0.0458197362645751
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 80,
+        "recognised_by_name": 80,
+        "derivation_terms": 0,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 4,
+            "value_mean": 0.8725,
+            "amount_mean": 25.5825,
+            "amount_ci": [
+              25.275,
+              26.037499999999998
+            ],
+            "amount_sd": 0.4499166589491875
+          },
+          {
+            "stratum": 1,
+            "n": 4,
+            "value_mean": 7.805,
+            "amount_mean": 30.2025,
+            "amount_ci": [
+              29.54,
+              30.87
+            ],
+            "amount_sd": 0.8414818278885562
+          },
+          {
+            "stratum": 2,
+            "n": 4,
+            "value_mean": 12.092500000000001,
+            "amount_mean": 33.0625,
+            "amount_ci": [
+              32.045,
+              34.08
+            ],
+            "amount_sd": 1.2216757616760152
+          },
+          {
+            "stratum": 3,
+            "n": 4,
+            "value_mean": 17.880000000000003,
+            "amount_mean": 36.92,
+            "amount_ci": [
+              36.04,
+              37.8
+            ],
+            "amount_sd": 1.0887607634370384
+          },
+          {
+            "stratum": 4,
+            "n": 4,
+            "value_mean": 22.072499999999998,
+            "amount_mean": 39.715,
+            "amount_ci": [
+              38.8525,
+              40.4075
+            ],
+            "amount_sd": 0.8846279820730664
+          },
+          {
+            "stratum": 5,
+            "n": 4,
+            "value_mean": 27.267500000000002,
+            "amount_mean": 43.18000000000001,
+            "amount_ci": [
+              42.945,
+              43.455
+            ],
+            "amount_sd": 0.2905167809266801
+          },
+          {
+            "stratum": 6,
+            "n": 4,
+            "value_mean": 32.2,
+            "amount_mean": 46.465,
+            "amount_ci": [
+              45.815,
+              47.105000000000004
+            ],
+            "amount_sd": 0.8152913589631638
+          },
+          {
+            "stratum": 7,
+            "n": 4,
+            "value_mean": 37.6075,
+            "amount_mean": 50.072500000000005,
+            "amount_ci": [
+              49.37,
+              50.9925
+            ],
+            "amount_sd": 0.9746238590690602
+          },
+          {
+            "stratum": 8,
+            "n": 4,
+            "value_mean": 42.965,
+            "amount_mean": 53.6425,
+            "amount_ci": [
+              52.665,
+              54.620000000000005
+            ],
+            "amount_sd": 1.2288036187012696
+          },
+          {
+            "stratum": 9,
+            "n": 4,
+            "value_mean": 46.802499999999995,
+            "amount_mean": 56.2,
+            "amount_ci": [
+              56.035000000000004,
+              56.370000000000005
+            ],
+            "amount_sd": 0.2070426687102608
+          },
+          {
+            "stratum": 10,
+            "n": 4,
+            "value_mean": 52.445,
+            "amount_mean": 59.9625,
+            "amount_ci": [
+              59.254999999999995,
+              60.68
+            ],
+            "amount_sd": 0.9012352634024053
+          },
+          {
+            "stratum": 11,
+            "n": 4,
+            "value_mean": 56.5175,
+            "amount_mean": 62.6775,
+            "amount_ci": [
+              62.205,
+              63.150000000000006
+            ],
+            "amount_sd": 0.5878420989801032
+          },
+          {
+            "stratum": 12,
+            "n": 4,
+            "value_mean": 62.3075,
+            "amount_mean": 66.5375,
+            "amount_ci": [
+              66.0175,
+              66.97
+            ],
+            "amount_sd": 0.5750000000000011
+          },
+          {
+            "stratum": 13,
+            "n": 4,
+            "value_mean": 68.295,
+            "amount_mean": 70.53,
+            "amount_ci": [
+              69.75,
+              71.41
+            ],
+            "amount_sd": 0.9613878856458873
+          },
+          {
+            "stratum": 14,
+            "n": 4,
+            "value_mean": 72.435,
+            "amount_mean": 73.28999999999999,
+            "amount_ci": [
+              72.82,
+              73.75999999999999
+            ],
+            "amount_sd": 0.5774657276987676
+          },
+          {
+            "stratum": 15,
+            "n": 4,
+            "value_mean": 76.0125,
+            "amount_mean": 75.945,
+            "amount_ci": [
+              75.1225,
+              77.4675
+            ],
+            "amount_sd": 1.519177408994751
+          },
+          {
+            "stratum": 16,
+            "n": 4,
+            "value_mean": 83.9575,
+            "amount_mean": 81.7775,
+            "amount_ci": [
+              80.58500000000001,
+              83.715
+            ],
+            "amount_sd": 1.9739195356785262
+          },
+          {
+            "stratum": 17,
+            "n": 4,
+            "value_mean": 88.265,
+            "amount_mean": 83.8425,
+            "amount_ci": [
+              82.68,
+              84.50999999999999
+            ],
+            "amount_sd": 1.1752836537052076
+          },
+          {
+            "stratum": 18,
+            "n": 4,
+            "value_mean": 93.485,
+            "amount_mean": 90.36,
+            "amount_ci": [
+              87.495,
+              93.22500000000001
+            ],
+            "amount_sd": 3.411031124650339
+          },
+          {
+            "stratum": 19,
+            "n": 4,
+            "value_mean": 98.935,
+            "amount_mean": 94.98750000000001,
+            "amount_ci": [
+              90.785,
+              99.19000000000001
+            ],
+            "amount_sd": 4.858006278299777
+          }
+        ]
+      },
+      "efficiency": {
+        "efficiency": 0.8424542524668008,
+        "missed_share": 0.15754574753319908,
+        "bad_share": 0.0,
+        "buyer_payoff": 6.963457812500001,
+        "seller_payoff": 7.034467187500001,
+        "gains": 13.997925,
+        "first_best": 16.615650000000002,
+        "trade_rate": 0.27921875,
+        "efficiency_ci": [
+          0.8382795101071634,
+          0.8464232375618141
+        ],
+        "missed_share_ci": [
+          0.15357676243818583,
+          0.1617204898928366
+        ],
+        "bad_share_ci": [
+          0.0,
+          0.0
+        ],
+        "buyer_payoff_ci": [
+          6.8421142578125,
+          7.08093681640625
+        ],
+        "seller_payoff_ci": [
+          6.917990546874999,
+          7.1480199609375
+        ],
+        "gains_ci": [
+          13.76467234375,
+          14.215048242187502
+        ],
+        "first_best_ci": [
+          16.399251406250002,
+          16.82051
+        ],
+        "trade_rate_ci": [
+          0.275625,
+          0.2828125
+        ],
+        "eq_efficiency_same_draws": 0.8424542524668008,
+        "eq_trade_rate_same_draws": 0.27921875,
+        "eq_efficiency_theory": 0.8437499999999999
+      },
+      "eq_payoffs": {
+        "buyer": 7.033342232098764,
+        "seller": 7.03370221234568,
+        "gains": 14.067044444444447,
+        "first_best": 16.66665925925926
+      },
+      "exploitability": {
+        "vs_model_buyer": {
+          "rival_br": 6.933693437499997,
+          "rival_br_ci": [
+            6.844831535156248,
+            7.0216539375
+          ],
+          "model_vs_br": 6.687191406249992,
+          "model_vs_br_ci": [
+            6.559147425781241,
+            6.805374507812492
+          ],
+          "rival_eq": 6.967908333333331,
+          "rival_eq_ci": [
+            6.915901652343749,
+            7.0204797447916665
+          ],
+          "model_vs_eq": 6.938118854166667,
+          "model_vs_eq_ci": [
+            6.840020136718748,
+            7.033812967447916
+          ],
+          "br_gain_over_eq_play": -0.034214895833333724,
+          "br_gain_over_eq_play_ci": [
+            -0.10114306770833625,
+            0.030200764322915432
+          ],
+          "rival_br_in_sample": 7.110753125000002,
+          "br_gain_in_sample": 0.14284479166667108
+        },
+        "vs_model_seller": {
+          "rival_br": 6.99574171875,
+          "rival_br_ci": [
+            6.871429218750001,
+            7.1203797031250025
+          ],
+          "model_vs_br": 6.772970000000001,
+          "model_vs_br_ci": [
+            6.642054593750004,
+            6.903939136718755
+          ],
+          "rival_eq": 7.066133281250001,
+          "rival_eq_ci": [
+            7.015073838541667,
+            7.114976532552084
+          ],
+          "model_vs_eq": 7.110667500000003,
+          "model_vs_eq_ci": [
+            7.022567161458338,
+            7.201499363281255
+          ],
+          "br_gain_over_eq_play": -0.0703915624999992,
+          "br_gain_over_eq_play_ci": [
+            -0.1889247395833321,
+            0.04554071223958516
+          ],
+          "rival_br_in_sample": 7.254744843749998,
+          "br_gain_in_sample": 0.18861156249999755
+        }
+      }
+    },
+    "E": {
+      "label": "Flash, informed prompt, k = 1/3",
+      "model": "gemini-3.8-flash",
+      "thinking_level": "low",
+      "prompt_version": "informed-k13-v1",
+      "k": 0.3333333333333333,
+      "invalid_replies": 0,
+      "buyer": {
+        "n": 60,
+        "intercept": 4.087145274988034,
+        "intercept_ci": [
+          1.6682241469575068,
+          6.475623614494354
+        ],
+        "slope": 0.8078454273941953,
+        "slope_ci": [
+          0.7767292241774394,
+          0.8382430578540838
+        ],
+        "resid_sd": 4.359507730881599,
+        "eq_intercept": 8.333333333333334,
+        "eq_slope": 0.75,
+        "n_trade_region": 40,
+        "fit_trade_region": {
+          "intercept": 8.308557823481305,
+          "intercept_ci": [
+            8.258835524434602,
+            8.334833666841725
+          ],
+          "slope": 0.7504698340398328,
+          "slope_ci": [
+            0.7499851809660134,
+            0.7514020779613152
+          ],
+          "resid_sd": 0.03676311903241479
+        },
+        "mean_abs_dev_from_eq": 1.467819444444445,
+        "mean_abs_dev_from_eq_trade_region": 0.008229166666667708,
+        "share_at_eq_to_the_cent": 0.85,
+        "share_at_eq_trade_region": 0.975,
+        "share_at_k_half_formula": 0.0,
+        "share_at_k_half_formula_trade_region": 0.0,
+        "ir_violations": 13,
+        "ir_violation_share": 0.21666666666666667,
+        "ir_violation_ci": [
+          0.13122921046407016,
+          0.3362026834734252
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          -6.938893903907228e-18,
+          0.06017393047793289
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 60,
+        "recognised_by_name": 60,
+        "derivation_terms": 48,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 3,
+            "value_mean": 1.0533333333333335,
+            "amount_mean": 2.9566666666666666,
+            "amount_ci": [
+              0.0,
+              8.87
+            ],
+            "amount_sd": 5.12109688771198
+          },
+          {
+            "stratum": 1,
+            "n": 3,
+            "value_mean": 8.003333333333332,
+            "amount_mean": 7.260000000000001,
+            "amount_ci": [
+              0.0,
+              15.339999999999998
+            ],
+            "amount_sd": 7.702804684009584
+          },
+          {
+            "stratum": 2,
+            "n": 3,
+            "value_mean": 11.773333333333333,
+            "amount_mean": 17.163333333333334,
+            "amount_ci": [
+              16.32,
+              18.72
+            ],
+            "amount_sd": 1.3496789741762045
+          },
+          {
+            "stratum": 3,
+            "n": 3,
+            "value_mean": 17.88,
+            "amount_mean": 16.19,
+            "amount_ci": [
+              13.51,
+              20.56
+            ],
+            "amount_sd": 3.816765646460363
+          },
+          {
+            "stratum": 4,
+            "n": 3,
+            "value_mean": 21.676666666666666,
+            "amount_mean": 24.593333333333334,
+            "amount_ci": [
+              23.87,
+              25.42
+            ],
+            "amount_sd": 0.7801495583113114
+          },
+          {
+            "stratum": 5,
+            "n": 3,
+            "value_mean": 27.42,
+            "amount_mean": 20.043333333333333,
+            "amount_ci": [
+              0.0,
+              32.01
+            ],
+            "amount_sd": 17.466666348600505
+          },
+          {
+            "stratum": 6,
+            "n": 3,
+            "value_mean": 31.64333333333333,
+            "amount_mean": 32.06666666666667,
+            "amount_ci": [
+              30.98,
+              33.63
+            ],
+            "amount_sd": 1.3878160300750735
+          },
+          {
+            "stratum": 7,
+            "n": 3,
+            "value_mean": 36.669999999999995,
+            "amount_mean": 35.836666666666666,
+            "amount_ci": [
+              34.97,
+              36.3
+            ],
+            "amount_sd": 0.751154666718735
+          },
+          {
+            "stratum": 8,
+            "n": 3,
+            "value_mean": 42.24,
+            "amount_mean": 40.01333333333333,
+            "amount_ci": [
+              38.92,
+              40.99
+            ],
+            "amount_sd": 1.0399198687078413
+          },
+          {
+            "stratum": 9,
+            "n": 3,
+            "value_mean": 47.24333333333333,
+            "amount_mean": 43.76666666666667,
+            "amount_ci": [
+              43.29999999999999,
+              44.6
+            ],
+            "amount_sd": 0.7234178138070255
+          },
+          {
+            "stratum": 10,
+            "n": 3,
+            "value_mean": 51.446666666666665,
+            "amount_mean": 46.916666666666664,
+            "amount_ci": [
+              45.93,
+              48.77
+            ],
+            "amount_sd": 1.6061548285683238
+          },
+          {
+            "stratum": 11,
+            "n": 3,
+            "value_mean": 56.00333333333333,
+            "amount_mean": 50.336666666666666,
+            "amount_ci": [
+              49.830000000000005,
+              51.28
+            ],
+            "amount_sd": 0.8177000264970864
+          },
+          {
+            "stratum": 12,
+            "n": 3,
+            "value_mean": 62.15,
+            "amount_mean": 54.946666666666665,
+            "amount_ci": [
+              54.35999999999999,
+              55.77
+            ],
+            "amount_sd": 0.7341888948583573
+          },
+          {
+            "stratum": 13,
+            "n": 3,
+            "value_mean": 66.58,
+            "amount_mean": 58.27,
+            "amount_ci": [
+              57.35,
+              59.87
+            ],
+            "amount_sd": 1.390827092057094
+          },
+          {
+            "stratum": 14,
+            "n": 3,
+            "value_mean": 73.89,
+            "amount_mean": 63.75,
+            "amount_ci": [
+              63.10999999999999,
+              64.55
+            ],
+            "amount_sd": 0.7332121111929328
+          },
+          {
+            "stratum": 15,
+            "n": 3,
+            "value_mean": 77.91,
+            "amount_mean": 66.76666666666667,
+            "amount_ci": [
+              66.04,
+              67.33
+            ],
+            "amount_sd": 0.6603282012252157
+          },
+          {
+            "stratum": 16,
+            "n": 3,
+            "value_mean": 80.96666666666665,
+            "amount_mean": 69.06,
+            "amount_ci": [
+              68.42,
+              69.8
+            ],
+            "amount_sd": 0.6954135460285465
+          },
+          {
+            "stratum": 17,
+            "n": 3,
+            "value_mean": 88.25999999999999,
+            "amount_mean": 74.52666666666666,
+            "amount_ci": [
+              72.3,
+              75.71
+            ],
+            "amount_sd": 1.929619997132421
+          },
+          {
+            "stratum": 18,
+            "n": 3,
+            "value_mean": 90.87666666666667,
+            "amount_mean": 76.49333333333334,
+            "amount_ci": [
+              76.17,
+              76.67
+            ],
+            "amount_sd": 0.2804163571073078
+          },
+          {
+            "stratum": 19,
+            "n": 3,
+            "value_mean": 97.94333333333334,
+            "amount_mean": 81.86999999999999,
+            "amount_ci": [
+              80.33,
+              83.28
+            ],
+            "amount_sd": 1.4792903704141402
+          }
+        ]
+      },
+      "seller": {
+        "n": 60,
+        "intercept": 32.40463426638079,
+        "intercept_ci": [
+          32.29866471230088,
+          32.51079122142519
+        ],
+        "slope": 0.6306259075904259,
+        "slope_ci": [
+          0.6276742433585257,
+          0.633780326362389
+        ],
+        "resid_sd": 1.3504272563475723,
+        "eq_intercept": 33.333333333333336,
+        "eq_slope": 0.6,
+        "n_trade_region": 49,
+        "fit_trade_region": {
+          "intercept": 33.37822076536181,
+          "intercept_ci": [
+            33.30154937010877,
+            33.473178037887735
+          ],
+          "slope": 0.5994917870928147,
+          "slope_ci": [
+            0.5967848738557108,
+            0.6021961076422301
+          ],
+          "resid_sd": 0.22271752687376326
+        },
+        "mean_abs_dev_from_eq": 0.6302444444444445,
+        "mean_abs_dev_from_eq_trade_region": 0.0563537414965982,
+        "share_at_eq_to_the_cent": 0.7833333333333333,
+        "share_at_eq_trade_region": 0.9387755102040817,
+        "share_at_k_half_formula": 0.0,
+        "share_at_k_half_formula_trade_region": 0.0,
+        "ir_violations": 1,
+        "ir_violation_share": 0.016666666666666666,
+        "ir_violation_ci": [
+          0.002948083860873682,
+          0.08855338226779477
+        ],
+        "ir_binding": 0,
+        "ir_binding_share": 0.0,
+        "ir_binding_ci": [
+          -6.938893903907228e-18,
+          0.06017393047793289
+        ],
+        "out_of_range": 0,
+        "thought_summaries": 60,
+        "recognised_by_name": 60,
+        "derivation_terms": 50,
+        "strata": [
+          {
+            "stratum": 0,
+            "n": 3,
+            "value_mean": 1.0533333333333335,
+            "amount_mean": 33.96666666666667,
+            "amount_ci": [
+              33.72,
+              34.45
+            ],
+            "amount_sd": 0.41860880704225006
+          },
+          {
+            "stratum": 1,
+            "n": 3,
+            "value_mean": 7.28,
+            "amount_mean": 37.70333333333334,
+            "amount_ci": [
+              37.25,
+              38.27
+            ],
+            "amount_sd": 0.5193585787616632
+          },
+          {
+            "stratum": 2,
+            "n": 3,
+            "value_mean": 12.603333333333333,
+            "amount_mean": 40.89333333333334,
+            "amount_ci": [
+              39.68,
+              41.87
+            ],
+            "amount_sd": 1.1140167563072523
+          },
+          {
+            "stratum": 3,
+            "n": 3,
+            "value_mean": 17.326666666666668,
+            "amount_mean": 43.73,
+            "amount_ci": [
+              42.89000000000001,
+              44.65
+            ],
+            "amount_sd": 0.8827230596285555
+          },
+          {
+            "stratum": 4,
+            "n": 3,
+            "value_mean": 22.016666666666666,
+            "amount_mean": 46.85999999999999,
+            "amount_ci": [
+              45.48,
+              47.73
+            ],
+            "amount_sd": 1.2085942247090213
+          },
+          {
+            "stratum": 5,
+            "n": 3,
+            "value_mean": 27.423333333333336,
+            "amount_mean": 49.78666666666667,
+            "amount_ci": [
+              49.63,
+              50.04
+            ],
+            "amount_sd": 0.22143471573656406
+          },
+          {
+            "stratum": 6,
+            "n": 3,
+            "value_mean": 32.72666666666667,
+            "amount_mean": 52.97,
+            "amount_ci": [
+              52.45000000000001,
+              53.29999999999999
+            ],
+            "amount_sd": 0.4557411546042303
+          },
+          {
+            "stratum": 7,
+            "n": 3,
+            "value_mean": 37.803333333333335,
+            "amount_mean": 56.01666666666667,
+            "amount_ci": [
+              55.07,
+              57.12
+            ],
+            "amount_sd": 1.0339406817285652
+          },
+          {
+            "stratum": 8,
+            "n": 3,
+            "value_mean": 42.64000000000001,
+            "amount_mean": 58.916666666666664,
+            "amount_ci": [
+              57.78,
+              60.29
+            ],
+            "amount_sd": 1.2716262553648894
+          },
+          {
+            "stratum": 9,
+            "n": 3,
+            "value_mean": 46.923333333333325,
+            "amount_mean": 61.48666666666667,
+            "amount_ci": [
+              61.35,
+              61.64000000000001
+            ],
+            "amount_sd": 0.14571661996262897
+          },
+          {
+            "stratum": 10,
+            "n": 3,
+            "value_mean": 52.32333333333333,
+            "amount_mean": 64.72666666666667,
+            "amount_ci": [
+              64.1,
+              65.85
+            ],
+            "amount_sd": 0.9750042734949055
+          },
+          {
+            "stratum": 11,
+            "n": 3,
+            "value_mean": 56.199999999999996,
+            "amount_mean": 67.05333333333334,
+            "amount_ci": [
+              66.62,
+              67.53
+            ],
+            "amount_sd": 0.4565449959569502
+          },
+          {
+            "stratum": 12,
+            "n": 3,
+            "value_mean": 62.69,
+            "amount_mean": 70.95,
+            "amount_ci": [
+              70.68,
+              71.25
+            ],
+            "amount_sd": 0.2861817604250804
+          },
+          {
+            "stratum": 13,
+            "n": 3,
+            "value_mean": 68.50333333333333,
+            "amount_mean": 74.43666666666667,
+            "amount_ci": [
+              73.28,
+              75.19
+            ],
+            "amount_sd": 1.0168742957383334
+          },
+          {
+            "stratum": 14,
+            "n": 3,
+            "value_mean": 72.78000000000002,
+            "amount_mean": 77.32,
+            "amount_ci": [
+              76.57,
+              78.08
+            ],
+            "amount_sd": 0.7550496672405093
+          },
+          {
+            "stratum": 15,
+            "n": 3,
+            "value_mean": 76.31666666666668,
+            "amount_mean": 78.87666666666667,
+            "amount_ci": [
+              78.52,
+              79.52
+            ],
+            "amount_sd": 0.5582412859448244
+          },
+          {
+            "stratum": 16,
+            "n": 3,
+            "value_mean": 84.04666666666667,
+            "amount_mean": 84.08333333333333,
+            "amount_ci": [
+              83.18,
+              84.69
+            ],
+            "amount_sd": 0.7975169799655205
+          },
+          {
+            "stratum": 17,
+            "n": 3,
+            "value_mean": 87.96,
+            "amount_mean": 87.22000000000001,
+            "amount_ci": [
+              85.63,
+              89.36
+            ],
+            "amount_sd": 1.9248636315334147
+          },
+          {
+            "stratum": 18,
+            "n": 3,
+            "value_mean": 93.18666666666667,
+            "amount_mean": 93.18666666666667,
+            "amount_ci": [
+              92.3,
+              94.15000000000002
+            ],
+            "amount_sd": 0.9273798215042968
+          },
+          {
+            "stratum": 19,
+            "n": 3,
+            "value_mean": 99.11333333333333,
+            "amount_mean": 99.11333333333333,
+            "amount_ci": [
+              98.96,
+              99.40000000000002
+            ],
+            "amount_sd": 0.24846193538112712
+          }
+        ]
+      },
+      "efficiency": {
+        "efficiency": 0.8319971362539099,
+        "missed_share": 0.16800286374609008,
+        "bad_share": 0.0,
+        "buyer_payoff": 6.108585185185184,
+        "seller_payoff": 7.688245370370371,
+        "gains": 13.796830555555557,
+        "first_best": 16.582786111111112,
+        "trade_rate": 0.2747222222222222,
+        "efficiency_ci": [
+          0.8276395317098133,
+          0.8363842659855703
+        ],
+        "missed_share_ci": [
+          0.16361573401442978,
+          0.17236046829018664
+        ],
+        "bad_share_ci": [
+          0.0,
+          0.0
+        ],
+        "buyer_payoff_ci": [
+          5.975413101851852,
+          6.228512175925925
+        ],
+        "seller_payoff_ci": [
+          7.566146967592593,
+          7.809350902777778
+        ],
+        "gains_ci": [
+          13.564225138888888,
+          14.019408125
+        ],
+        "first_best_ci": [
+          16.339142083333336,
+          16.809395972222223
+        ],
+        "trade_rate_ci": [
+          0.27111111111111114,
+          0.2783333333333333
+        ],
+        "eq_efficiency_same_draws": 0.8317046642912671,
+        "eq_trade_rate_same_draws": 0.27444444444444444,
+        "eq_efficiency_theory": 0.8333333333333335
+      },
+      "eq_payoffs": {
+        "buyer": 6.172835185185183,
+        "seller": 7.716053703703705,
+        "gains": 13.888888888888891,
+        "first_best": 16.66665925925926
+      },
+      "exploitability": {
+        "vs_model_buyer": {
+          "rival_br": 7.598230486111111,
+          "rival_br_ci": [
+            7.450818881944449,
+            7.7445467708333355
+          ],
+          "model_vs_br": 5.915288055555554,
+          "model_vs_br_ci": [
+            5.750059923611111,
+            6.084527937499997
+          ],
+          "rival_eq": 7.625067106481484,
+          "rival_eq_ci": [
+            7.55296760127315,
+            7.700797646412035
+          ],
+          "model_vs_eq": 6.090228935185185,
+          "model_vs_eq_ci": [
+            5.964094087962962,
+            6.217767900462964
+          ],
+          "br_gain_over_eq_play": -0.02683662037037106,
+          "br_gain_over_eq_play_ci": [
+            -0.15907913888888686,
+            0.10453293229166058
+          ],
+          "rival_br_in_sample": 7.897382430555555,
+          "br_gain_in_sample": 0.27231532407407144
+        },
+        "vs_model_seller": {
+          "rival_br": 6.160406249999998,
+          "rival_br_ci": [
+            6.078726638888887,
+            6.2452019826388865
+          ],
+          "model_vs_br": 7.388707916666667,
+          "model_vs_br_ci": [
+            7.2523646215277795,
+            7.519833614583332
+          ],
+          "rival_eq": 6.195069652777774,
+          "rival_eq_ci": [
+            6.144062320746524,
+            6.24495245963541
+          ],
+          "model_vs_eq": 7.78971326388889,
+          "model_vs_eq_ci": [
+            7.6980532026909705,
+            7.888700804253472
+          ],
+          "br_gain_over_eq_play": -0.03466340277777748,
+          "br_gain_over_eq_play_ci": [
+            -0.10201136660879703,
+            0.03164746383101922
+          ],
+          "rival_br_in_sample": 6.319728402777779,
+          "br_gain_in_sample": 0.12465875000000448
+        }
+      }
+    }
+  },
+  "cost": {
+    "total_usd": 1.9996630000000002,
+    "calls": 1240,
+    "retried_calls": 5,
+    "invalid_replies": 0,
+    "by_condition": {
+      "A": {
+        "calls": 400,
+        "input_tokens": 114160,
+        "output_tokens": 6219,
+        "thinking_tokens": 0,
+        "usd": 0.049795500000000256,
+        "models": [
+          "gemini-3.5-flash-lite"
+        ],
+        "usd_per_call": 0.00012448875000000065
+      },
+      "C": {
+        "calls": 400,
+        "input_tokens": 106960,
+        "output_tokens": 6703,
+        "thinking_tokens": 0,
+        "usd": 0.04884549999999986,
+        "models": [
+          "gemini-3.5-flash-lite"
+        ],
+        "usd_per_call": 0.00012211374999999966
+      },
+      "B": {
+        "calls": 160,
+        "input_tokens": 45664,
+        "output_tokens": 97715,
+        "thinking_tokens": 95818,
+        "usd": 0.40067925000000004,
+        "models": [
+          "gemini-3.8-flash"
+        ],
+        "usd_per_call": 0.0025042453125000003
+      },
+      "D": {
+        "calls": 160,
+        "input_tokens": 42784,
+        "output_tokens": 118695,
+        "thinking_tokens": 116637,
+        "usd": 0.47719425000000004,
+        "models": [
+          "gemini-3.8-flash"
+        ],
+        "usd_per_call": 0.0029824640625
+      },
+      "E": {
+        "calls": 120,
+        "input_tokens": 34488,
+        "output_tokens": 265942,
+        "thinking_tokens": 264276,
+        "usd": 1.0231485,
+        "models": [
+          "gemini-3.8-flash"
+        ],
+        "usd_per_call": 0.0085262375
+      }
+    }
+  }
+}

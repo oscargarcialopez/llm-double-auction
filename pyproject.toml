@@ -1,0 +1,37 @@
+[project]
+name = "llm-double-auction"
+version = "0.1.0"
+description = "LLM agents in the Chatterjee-Samuelson double auction, measured against the Myerson-Satterthwaite frontier"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.0",
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "matplotlib>=3.9",
+    "python-dotenv>=1.0",
+]
+
+[project.scripts]
+auction = "llm_double_auction.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "ruff>=0.7"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llm_double_auction"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

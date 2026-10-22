@@ -1,0 +1,323 @@
+## Slide 1
+
+AGENTIC COMMERCE × MECHANISM DESIGN
+
+1 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+When two AI agents haggle strategically, a 1983 theorem caps what they can capture: 84.4% of the value.
+
+How close does Gemini get?
+
+1,240 sealed bids from two Gemini models, $2.00 of API
+
+calls. The math, the experiment and what it means for
+
+agents that buy and sell: swipe →
+
+Gemini 3.8 Flash
+
+84.2%
+
+Gemini 3.5 Flash-Lite
+
+44.9%
+
+Flash-Lite, prompted as a shopping assistant
+
+16.8%
+
+ceiling 84.4%
+
+## Slide 2
+
+THE THEOREM
+
+2 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Myerson–Satterthwaite (1983)
+
+A buyer values an item at v; the seller's cost is c.
+
+Each knows only its own number. No trading rule can
+
+be all four at once:
+
+1
+
+Efficient: every deal with v > c happens.
+
+2
+
+Manipulation-proof: it still works when both sides
+
+bid strategically (Bayes–Nash equilibrium).
+
+3
+
+Voluntary: nobody expects to lose by taking part.
+
+4
+
+Self-funded: no money from outside.
+
+With v and c uniform on 0–100 €, a rule that keeps
+
+2–4 realises at most
+
+$\dfrac{\mathrm{gains\ realised}}{\mathrm{gains\ available}}\;\leq\;\dfrac{9/64}{1/6}\;=\;\dfrac{27}{32}$
+
+= 84.4%. The missing 15.6% is the price of private
+
+information, not a modelling failure: no prompt or
+
+model can win it back under these rules.
+
+## Slide 3
+
+THE GAME
+
+3 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Split-the-difference double auction
+
+Buyer bids b, seller asks s, sealed and at the same
+
+time. If b ≥ s they trade at p = (b + s)/2.
+
+Against asks spread evenly above $s_{\min}$, the
+
+buyer's best bid is
+
+$\max_{b}\;\int_{s_{\min}}^{b}\left(v-\dfrac{b+s}{2}\right)\mathrm{d}s\;\;\Rightarrow\;\; b=\dfrac{2v+s_{\min}}{3}$
+
+The seller's problem mirrors it. Solving both
+
+(Chatterjee & Samuelson, 1983):
+
+$b(v)=\dfrac{2}{3}\,v+\dfrac{25}{3}\qquad s(c)=\dfrac{2}{3}\,c+25$
+
+so they trade exactly when
+
+$v-c\;\geq\;25$
+
+Deals with a gap under 25 € never happen. They hold
+
+exactly the 15.6% the theorem says no rule can save,
+
+so this simple auction is the best possible one.
+
+## Slide 4
+
+WHY 27/32
+
+4 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Where the other 15.6% goes
+
+The gap d = v − c of a random pair has a triangular
+
+density. Trading only when d ≥ t realises
+
+$G(t)=\int_t^{100} d\;\dfrac{100-d}{100^2}\;\mathrm{d}d\;=\;\dfrac{(100-t)^2\,(100+2t)}{6\cdot 100^2}$
+
+First best G(0) = 16.67 €, equilibrium
+
+G(25) = 14.06 €:
+
+$\dfrac{G(25)}{G(0)}\;=\;\left(\dfrac{3}{4}\right)^{2}\cdot\dfrac{3}{2}\;=\;\dfrac{27}{32}$
+
+kept: 84.4%
+
+lost: 15.6%
+
+## Slide 5
+
+WHAT THE AGENTS BID
+
+5 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Flash plays the equilibrium to the cent
+
+Dots: mean per €5 band of values or costs, over all calls.
+
+Flash: 240 of 240 bids and asks that could trade sat on
+
+the equilibrium, to the cent. Its reasoning summaries
+
+named Chatterjee–Samuelson in 320 of 320 calls, even
+
+with the game told as selling a used camera lens.
+
+Flash-Lite shades too hard: sellers ask 0.46c + 43.0
+
+instead of 0.67c + 25.
+
+As a shopping assistant its asks barely follow its cost
+
+(0.30c + 51.2), and 60 of 200 were below its cost where
+
+a trade could happen.
+
+equilibrium
+
+bid = value
+
+## Slide 6
+
+EFFICIENCY
+
+6 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Flash sits on the theoretical frontier
+
+Share of the available gains each pair of agents realised
+
+(every buyer call against every seller call, 95% CI):
+
+Recall or reasoning? With the price at p = (b + 2s)/3 the
+
+equilibrium is no longer the famous one. Flash solved the
+
+new game: 85 of 89 tradeable bids and asks at the new
+
+equilibrium, 0 of 120 at the textbook numbers, 83.2%
+
+realised against 83.3% in theory. Its reasoning summaries
+
+mention first-order conditions or derivatives in 98 of 120
+
+calls, against 1 of 320 in the textbook game.
+
+Flash · auction prompt
+
+84.2%
+
+Flash · shopping-assistant prompt
+
+84.2%
+
+Flash · auction prompt, k = 1/3
+
+83.2%
+
+Flash-Lite · auction prompt
+
+44.9%
+
+Flash-Lite · shopping-assistant prompt
+
+16.8%
+
+bound 84.4%
+
+## Slide 7
+
+EXPLOITABILITY
+
+7 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Can a smarter rival exploit them?
+
+I computed the exact best response to each agent's asks on
+
+half of the calls and scored it on the other half. Bars:
+
+the rival buyer's gain per auction over playing the
+
+equilibrium itself (95% CI).
+
+Flash leaves nothing to take. The shopping-assistant
+
+Flash-Lite seller hands a rival buyer +0.78 € per auction
+
+[+0.69, +0.87], 17% more than equilibrium play. As buyers,
+
+all agents were harder to exploit (at most +0.13 €).
+
+Flash · auction prompt
+
+−0.07 €
+
+Flash · shopping-assistant prompt
+
+−0.07 €
+
+Flash · auction prompt, k = 1/3
+
+−0.03 €
+
+Flash-Lite · auction prompt
+
++0.28 €
+
+Flash-Lite · shopping-assistant prompt
+
++0.78 €
+
+## Slide 8
+
+IF YOU BUILD AGENTS THAT TRADE
+
+8 / 8
+
+Gemini agents in a sealed-bid double auction · code & data in the first comment
+
+Four tests before you ship
+
+1
+
+Benchmark against the frontier, not 100%. Here it
+
+is 84.4%: an agent pair above it is not in
+
+equilibrium, so one side could do better by bidding
+
+differently, and a smarter rival will.
+
+2
+
+Change the rules to tell recall from reasoning.
+
+Famous games get recited: Flash named
+
+Chatterjee–Samuelson every time, so the test that
+
+counted was the k = 1/3 variant, which it also
+
+solved.
+
+3
+
+Test the framing you will ship. Flash-Lite fell
+
+from 44.9% to 16.8% as a shopping assistant; Flash
+
+stayed at 84.2%.
+
+4
+
+Measure exploitability with held-out best
+
+responses, and block dominated moves: the cheap
+
+seller asked below its own cost 60 of 200 times
+
+where a trade could happen.
+
+Code, data and the full derivation: link in the first
+
+comment.
