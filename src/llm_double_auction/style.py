@@ -1,7 +1,7 @@
-"""The shared look of the figures and the carousel: white, three inks, one hue per model,
-IBM Plex Sans throughout (vendored in fonts/). The two model hues pass the dataviz palette
-checks on white (lightness band, chroma floor, adjacent CVD delta E 10.3, normal-vision 20.1,
-both >= 3:1)."""
+"""The look of the README figures: white, three inks, one hue per model, IBM Plex Sans
+throughout (vendored in fonts/). The carousel is set like a paper instead (carousel.py).
+The two model hues pass the dataviz palette checks on white (lightness band, chroma floor,
+adjacent CVD delta E 10.3, normal-vision 20.1, both >= 3:1)."""
 
 from __future__ import annotations
 

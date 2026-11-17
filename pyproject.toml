@@ -10,6 +10,7 @@ dependencies = [
     "scipy>=1.13",
     "matplotlib>=3.9",
     "python-dotenv>=1.0",
+    "typst>=0.15.2",
 ]
 
 [project.scripts]

@@ -1,8 +1,12 @@
-"""The LinkedIn carousel: nine 4:5 slides (1080 x 1350 px) laid out like talk slides, one PDF
-plus PNG previews.
+"""The LinkedIn carousel: nine 4:5 pages (6 x 7.5 in, previews at 1080 x 1350 px) set like a
+paper. Times-like STIX Two type (vendored in fonts/), numbered sections and equations,
+captioned figures, ruled tables and the references; the figures use the steel blue and dark
+red of the author's thesis, one per model. Typst sets the pages and matplotlib draws the
+figures as SVG.
 
-Every number on the slides comes from results/summary.json through facts.build(); theory
-constants come from theory.py, and the two quotes are read from the cached calls.
+Every number comes from results/summary.json through facts.build(); theory constants come
+from theory.py, and the two quotes are read from the cached calls. carousel/slides.txt holds
+the pages as plain text: a text alternative, and the input for `auction check`.
 """
 
 from __future__ import annotations
@@ -13,48 +17,125 @@ import re
 from pathlib import Path
 
 import numpy as np
-from matplotlib.backends.backend_pdf import PdfPages
-from matplotlib.font_manager import FontProperties
-from matplotlib.patches import Rectangle
+import typst
+from matplotlib import font_manager
 
 from . import facts as fx
 from . import style
 from . import theory as th
-from .style import INK, INK_2, MUTED, SURFACE, WASH, plt
+from .style import plt
 
-W, H_IN, DPI = 8.0, 10.0, 135
-LEFT, RIGHT, TOP = 0.075, 0.925, 0.935
-BOTTOM, FLOOR = 0.055, 0.05  # the footer's last baseline; the lowest any content may reach
-FLASH, LITE = "gemini-3.8-flash", "gemini-3.5-flash-lite"
+TITLE = "Gemini agents vs the Myerson–Satterthwaite bound"
 AUTHOR = "Óscar García López"
-LINK = "Code, data and the full derivation are linked in the first comment."
+DATE = "November 2026"
 REPO = "github.com/oscargarcialopez/llm-double-auction"
-TITLE, BODY, SMALL, EQ = 23, 15, 12, 20
-LOST = "#cfcfcf"  # the share no rule can save: one step darker than the wash
-QUOTE_BG = "#f2f2f2"
+FLASH, LITE = "gemini-3.8-flash", "gemini-3.5-flash-lite"
+
+INK, GREY, FILL = "#000000", "#555555", "#e2e2e2"
+COLOR = {FLASH: "#4682b4", LITE: "#8b0000"}  # steel blue and dark red, as in the thesis
+TEXT_W = 4.9  # inches: a 6 in page with 0.55 in margins
+SIDE = 2.2  # inches: a square plot with text beside it
 
 # The story order: Flash in each prompt, then Flash-Lite.
 ORDER = ["B", "D", "E", "A", "C"]
-SHORT = {"B": "Flash", "D": "Flash as a shopping assistant",
-         "E": "Flash with p = (b + 2s)/3", "A": "Flash-Lite",
-         "C": "Flash-Lite as a shopping assistant"}
+GROUPS = [("Gemini 3.8 Flash", [("B", "auction prompt"), ("D", "shopping assistant"),
+                                ("E", "price $(b + 2s)\\/3$")]),
+          ("Gemini 3.5 Flash-Lite", [("A", "auction prompt"), ("C", "shopping assistant")])]
 
 # Two sentences from Flash's thought summaries: (condition, role, value, opening words).
 QUOTES = {"recall": ("D", "buyer", 26.38, "Okay, so I'm looking at a classic double auction"),
           "derive": ("E", "buyer", 10.82, "With some algebra")}
 
+REFERENCES = [
+    ("Chatterjee, K., & Samuelson, W. (1983). Bargaining under incomplete information.",
+     "Operations Research", "31(5), 835–851."),
+    ("Myerson, R. B., & Satterthwaite, M. A. (1983). Efficient mechanisms for bilateral "
+     "trading.", "Journal of Economic Theory", "29(2), 265–281."),
+]
 
-def sans(size: float, weight: str = "normal") -> FontProperties:
-    return FontProperties(family="IBM Plex Sans", size=size, weight=weight)
+PREAMBLE = r"""
+#set document(title: "@TITLE", author: "@AUTHOR", date: none)
+#set page(
+  width: 6in, height: 7.5in,
+  margin: (x: 0.55in, top: 0.74in, bottom: 0.62in),
+  header: context if here().page() > 1 {
+    set text(9.5pt, style: "italic")
+    grid(columns: (1fr, auto), [@TITLE], [@AUTHOR])
+    v(-3pt)
+    line(length: 100%, stroke: 0.4pt)
+  },
+  footer: context align(center, text(10pt)[#here().page()]),
+)
+#set text(font: "STIX Two Text", size: 13.5pt, lang: "en", region: "gb")
+#show math.equation: set text(font: "STIX Two Math")
+#set par(justify: true, leading: 0.5em, spacing: 0.78em)
+#set heading(numbering: "1.")
+#show heading: set text(15pt, weight: "bold")
+#show heading: set block(above: 0pt, below: 0.8em)
+#show heading.where(level: 2): set text(12.5pt)
+#show heading.where(level: 2): set block(above: 1.1em, below: 0.6em)
+#set math.equation(numbering: "(1)")
+#set enum(indent: 0.4em, body-indent: 0.6em, spacing: 0.5em)
+#set list(indent: 0.4em, body-indent: 0.6em, spacing: 0.5em, marker: [•])
+#show list: set par(justify: false)
+#show enum: set par(justify: false)
+#let cap(kind, n, body, above: 0.55em) = block(above: above, below: 0.85em, {
+  set text(11.5pt)
+  set par(justify: true, leading: 0.42em)
+  [#strong[#kind #n.] #body]
+})
+#let mquote(body, source) = pad(x: 1.1em, block(above: 0.65em, below: 0.75em, {
+  set text(12.5pt)
+  set par(justify: false, leading: 0.42em)
+  emph[“#body”]
+  linebreak()
+  align(right, text(11pt)[— #source])
+}))
+#let ruled(cols, aligns, header, ..rows) = align(center, {
+  set text(11.5pt)
+  set par(justify: false)
+  table(
+    columns: cols, align: aligns, stroke: none, inset: (x: 5pt, y: 3.4pt),
+    table.hline(stroke: 0.9pt),
+    table.header(..header),
+    table.hline(stroke: 0.5pt),
+    ..rows,
+    table.hline(stroke: 0.9pt),
+  )
+})
+"""
+
+MATH_DOLLAR = re.compile(r"(?<!\\)\$")
 
 
-def mono(size: float) -> FontProperties:
-    return FontProperties(family="DejaVu Sans Mono", size=size)
+def _esc(text: str) -> str:
+    """Plain text as Typst markup: escape what would start markup; a literal $ is \\$."""
+    text = text.replace("\\$", "\x00")
+    text = re.sub(r"([\\#*_@<>\[\]`~/=+-])", r"\\\1", text)
+    return text.replace("\x00", "\\$")
 
 
-def keep(formula: str) -> str:
-    """Join a formula with no-break spaces so the word wrap never splits it."""
-    return formula.replace(" ", "\u00a0")
+def T(src: str) -> str:
+    """Typst markup from text with $inline math$ (Typst math syntax)."""
+    parts = MATH_DOLLAR.split(src)
+    return "".join(_esc(p) if i % 2 == 0 else f"#box[${p}$]" for i, p in enumerate(parts))
+
+
+def P(src: str) -> str:
+    """The same text, plain: math loses its Typst escapes."""
+    parts = MATH_DOLLAR.split(src)
+    return "".join(p.replace("\\$", "$") if i % 2 == 0 else
+                   p.replace("\\/", "/").replace("^2", "²").replace("dif ", "d")
+                   for i, p in enumerate(parts))
+
+
+def head(h: str) -> str:
+    """A table header cell; a newline in it is a line break."""
+    return "[" + " \\ ".join(T(part) for part in h.split("\n")) + "]"
+
+
+def usd(x: str) -> str:
+    return x.replace("$", "\\$")
 
 
 def load_quotes(results_dir: Path) -> dict[str, str]:
@@ -69,501 +150,525 @@ def load_quotes(results_dir: Path) -> dict[str, str]:
     return out
 
 
-class Slide:
-    """A slide laid out top to bottom: each block is drawn at the cursor, measured, and the
-    cursor moves below it. Text is wrapped by measuring it and set on a baseline grid; `alt`
-    collects the slide's text in reading order."""
+class Page:
+    """One page: Typst markup blocks and the same content as plain text, in reading order."""
 
     def __init__(self):
-        self.fig = plt.figure(figsize=(W, H_IN), dpi=DPI)
-        self.fig.patch.set_facecolor(SURFACE)
-        self.renderer = self.fig.canvas.get_renderer()
-        self.alt: list[str] = []
-        self.y = TOP
-        self.floor = FLOOR
+        self.typ: list[str] = []
+        self.txt: list[str] = []
 
-    # --- measuring ---------------------------------------------------------------------
+    def raw(self, typ: str, txt: str | list[str] = ()) -> None:
+        self.typ.append(typ)
+        self.txt += [txt] if isinstance(txt, str) else list(txt)
 
-    def _w(self, s: str, prop: FontProperties) -> float:
-        return self.renderer.get_text_width_height_descent(s, prop, ismath=False)[0]
+    def h(self, src: str) -> None:
+        self.raw(f"= {T(src)}", P(src))
 
-    def _metrics(self, prop: FontProperties, leading: float) -> tuple[float, float, float]:
-        """Cap height, descent and baseline step, as fractions of the slide height."""
-        _, h, d = self.renderer.get_text_width_height_descent("Hg", prop, ismath=False)
-        px = self.fig.bbox.height
-        return (h - d) / px, d / px, leading * prop.get_size_in_points() * DPI / 72 / px
+    def p(self, src: str) -> None:
+        self.raw(T(src), P(src))
 
-    def _lines(self, text: str, prop: FontProperties, width: float) -> list[str]:
-        """Greedy word wrap to `width` (a fraction of the slide width)."""
-        px, lines = width * self.fig.bbox.width, []
-        for para in text.split("\n"):
-            line = ""
-            for word in para.split(" "):
-                trial = f"{line} {word}" if line else word
-                if line and self._w(trial, prop) > px:
-                    lines.append(line)
-                    line = word
-                else:
-                    line = trial
-            lines.append(line)
-        return lines
+    def eq(self, math: str, plain: str) -> None:
+        self.raw(f"$ {math} $", plain)
 
-    def _set(self, lines: list[str], prop: FontProperties, color: str, x: float,
-             leading: float) -> None:
-        cap, desc, step = self._metrics(prop, leading)
-        for i, line in enumerate(lines):
-            self.fig.text(x, self.y - cap - i * step, line, fontproperties=prop, color=color,
-                          va="baseline")
-        self.y -= cap + (len(lines) - 1) * step + desc
+    def bullets(self, srcs: list[str]) -> None:
+        self.raw("\n".join(f"- {T(s)}" for s in srcs), [P(s) for s in srcs])
 
-    # --- blocks --------------------------------------------------------------------------
+    def figure(self, name: str, n: int, caption: str, labels: list[str]) -> None:
+        self.raw(f'#align(center, image("{name}"))\n#cap("Figure", {n})[{T(caption)}]',
+                 [f"Figure {n}. {P(caption)}"] + labels)
 
-    def title(self, text: str, size: float = TITLE, gap: float = 0.035) -> None:
-        prop = sans(size, "semibold")
-        self._set(self._lines(text, prop, RIGHT - LEFT), prop, INK, LEFT, 1.18)
-        self.y -= gap
-        self.alt.append(text)
+    def beside(self, name: str, n: int, caption: str, text: str, labels: list[str]) -> None:
+        """A square plot at the left; its caption and a paragraph at the right."""
+        self.raw(f'#grid(columns: (auto, 1fr), column-gutter: 13pt,\n'
+                 f'  image("{name}"),\n'
+                 f'  [#set par(justify: false)\n#v(2pt)#cap("Figure", {n})[{T(caption)}]'
+                 f'\n\n{T(text)}])',
+                 [f"Figure {n}. {P(caption)}", P(text)] + labels)
 
-    def para(self, text: str, size: float = BODY, color: str = INK_2, gap: float = 0.022,
-             x: float = LEFT, width: float | None = None, weight: str = "normal",
-             leading: float = 1.45) -> None:
-        prop = sans(size, weight)
-        self._set(self._lines(text, prop, width or RIGHT - x), prop, color, x, leading)
-        self.y -= gap
-        self.alt.append(text)
-
-    def bullet(self, text: str, size: float = BODY, gap: float = 0.014,
-               mark: str = "•") -> None:
-        cap, _, _ = self._metrics(sans(size), 1.45)
-        self.fig.text(LEFT + 0.004, self.y - cap, mark, fontproperties=sans(size), color=INK_2,
-                      va="baseline")
-        self.para(text, size=size, x=LEFT + 0.035, gap=gap)
-
-    def quote(self, label: str, text: str, gap: float = 0.026) -> None:
-        """A sentence of model output in a grey box, with a small label above it."""
-        self.para(label, size=11, color=MUTED, gap=0.012)
-        pad_x, pad_y = 0.022, 0.016
-        top = self.y
-        self.y -= pad_y
-        prop = mono(12)
-        self._set(self._lines(text, prop, RIGHT - LEFT - 2 * pad_x), prop, INK, LEFT + pad_x,
-                  1.5)
-        self.y -= pad_y
-        self.fig.add_artist(Rectangle((LEFT, self.y), RIGHT - LEFT, top - self.y,
-                                      transform=self.fig.transFigure, facecolor=QUOTE_BG,
-                                      edgecolor="none", zorder=0))
-        self.y -= gap
-        self.alt.append(f"“{text}”")
-
-    def math(self, tex: str, size: float = EQ, gap: float = 0.024, x: float = LEFT) -> None:
-        t = self.fig.text(x, self.y, tex, fontsize=size, color=INK, va="top",
-                          math_fontfamily="cm")
-        self.y -= t.get_window_extent(self.renderer).height / self.fig.bbox.height + gap
-        self.alt.append(tex)
-
-    def axes(self, height: float, left: float = LEFT, right: float = RIGHT,
-             gap: float = 0.03):
-        ax = self.fig.add_axes((left, self.y - height, right - left, height))
-        ax.set_facecolor(SURFACE)
-        self.y -= height + gap
-        return ax
-
-    def beside(self, height: float, text: str, ylabel: str, xlabel: str,
-               gap: float = 0.03):
-        """A square 0-100 € plot at the left with a paragraph to its right. The y label sits
-        above the plot; the cursor moves below the taller of the two."""
-        top, side, left = self.y, height * H_IN / W, LEFT + 0.055
-        ax = self.fig.add_axes((left, top - 0.03 - height, side, height))
-        ax.set_xlim(0, th.H)
-        ax.set_ylim(0, th.H)
-        ax.set_xticks([0, 50, 100])
-        ax.set_yticks([0, 50, 100])
-        ax.tick_params(labelsize=11)
-        ax.grid(False)
-        ax.set_xlabel(xlabel, fontsize=11.5, labelpad=4)
-        ax.text(0, 1.04, ylabel, fontsize=11.5, color=INK_2, transform=ax.transAxes,
-                va="bottom")
-        self.para(text, x=left + side + 0.055, gap=0)
-        self.y = min(self.y, top - 0.03 - height - 0.065) - gap
-        return ax
-
-    def footer(self, text: str) -> None:
-        """Small grey text whose last line sits on the bottom margin. It leaves the cursor
-        where it was and raises the floor the content above has to clear."""
-        prop = sans(SMALL)
-        lines = self._lines(text, prop, RIGHT - LEFT)
-        cap, _, step = self._metrics(prop, 1.45)
-        content, self.y = self.y, BOTTOM + cap + (len(lines) - 1) * step
-        self.floor = self.y + 0.02
-        self._set(lines, prop, MUTED, LEFT, 1.45)
-        self.y = content
-        self.alt.append(text)
+    def markup(self) -> str:
+        return "\n\n".join(self.typ)
 
 
-def bar_rows(ax, rows, thickness_px: float = 18):
-    """Horizontal bars, one per row, with the label above each bar on a patch of white so
-    gridlines pass behind it. Rows are (y, value, colour, label); returns the bar height in
-    data units."""
-    ax.figure.canvas.draw()
-    height = thickness_px / (ax.bbox.height / np.ptp(ax.get_ylim()))
-    for y, value, color, label in rows:
-        ax.barh(y, value, height=height, color=color, lw=0)
-        ax.text(0, y + height / 2 + 0.06, label, fontproperties=sans(13), color=INK,
-                va="bottom", transform=ax.get_yaxis_transform(), zorder=5,
-                bbox={"boxstyle": "square,pad=0.1", "fc": SURFACE, "ec": "none"})
-    return height
+# --- figures --------------------------------------------------------------------------------
 
 
-# --- the slides ----------------------------------------------------------------------------
+def paper_style() -> None:
+    for font in sorted(style.FONTS.glob("STIX2Text-*.otf")):
+        font_manager.fontManager.addfont(str(font))
+    plt.rcParams.update({
+        "font.family": ["STIX Two Text", "STIXGeneral"],
+        "font.size": 12,
+        "mathtext.fontset": "stix",
+        "text.color": INK,
+        "figure.facecolor": "white",
+        "axes.facecolor": "white",
+        "savefig.facecolor": "white",
+        "axes.edgecolor": INK,
+        "axes.linewidth": 0.6,
+        "axes.labelcolor": INK,
+        "axes.labelsize": 12,
+        "axes.grid": False,
+        "axes.spines.top": True,
+        "axes.spines.right": True,
+        "xtick.direction": "in",
+        "ytick.direction": "in",
+        "xtick.top": True,
+        "ytick.right": True,
+        "xtick.major.size": 3.2,
+        "ytick.major.size": 3.2,
+        "xtick.major.width": 0.6,
+        "ytick.major.width": 0.6,
+        "xtick.labelsize": 11.5,
+        "ytick.labelsize": 11.5,
+        "xtick.color": INK,
+        "ytick.color": INK,
+        "legend.frameon": True,
+        "legend.fancybox": False,
+        "legend.edgecolor": INK,
+        "legend.framealpha": 1.0,
+        "legend.fontsize": 10.5,
+        "patch.linewidth": 0.6,
+        "hatch.linewidth": 0.5,
+        "svg.fonttype": "path",
+        "svg.hashsalt": "llm-double-auction",
+    })
 
 
-def slide_cover(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.para(AUTHOR, size=SMALL, color=MUTED, gap=0.03)
-    sl.title("Gemini agents vs. the Myerson–Satterthwaite bound", size=28, gap=0.03)
-    sl.para("I put Gemini agents on both sides of a sealed-bid double auction, with values "
-            "uniform on 0–100 €. When both sides bid strategically, no trading rule can "
-            f"realise more than {f['frontier']} of the gains (Myerson and Satterthwaite, "
-            "1983).", gap=0.06)
+def texts(fig) -> list[str]:
+    """The words on a figure that are not tick numbers: annotations, legends, axis labels and
+    category ticks."""
+    out = []
+    for ax in fig.axes:
+        out += [t.get_text() for t in ax.texts]
+        out += [ax.get_xlabel(), ax.get_ylabel()]
+        out += [t.get_text() for t in ax.get_yticklabels() if re.search("[A-Za-z]", t.get_text())]
+        if ax.get_legend():
+            out += [t.get_text() for t in ax.get_legend().get_texts()]
+    for leg in fig.legends:
+        out += [t.get_text() for t in leg.get_texts()]
+    return [t.replace("\n", " ") for t in out if t.strip()]
+
+
+def save(fig, path: Path) -> list[str]:
+    labels = texts(fig)
+    fig.savefig(path, format="svg", bbox_inches="tight", pad_inches=0.03,
+                metadata={"Date": None})
+    plt.close(fig)
+    return labels
+
+
+def square(ax, xlabel: str, ylabel: str) -> None:
+    ax.set_xlim(0, th.H)
+    ax.set_ylim(0, th.H)
+    ax.set_aspect("equal")
+    ax.set_xticks([0, 50, 100])
+    ax.set_yticks([0, 50, 100])
+    ax.set_xlabel(xlabel, labelpad=3)
+    ax.set_ylabel(ylabel, labelpad=2)
+
+
+def fig_overview(s: dict, f: dict, path: Path) -> list[str]:
     rows = [("B", "Gemini 3.8 Flash"), ("A", "Gemini 3.5 Flash-Lite"),
-            ("C", "Gemini 3.5 Flash-Lite as a shopping assistant")]
-    ax = sl.axes(0.38)
-    ax.set_xlim(0, 1.12)
-    ax.set_ylim(-0.5, len(rows) - 0.1)
-    ax.axis("off")
-    ys = np.arange(len(rows))[::-1] * 1.0
-    h = bar_rows(ax, [(y, s["conditions"][n]["efficiency"]["efficiency"],
-                       style.MODEL_COLOR[s["conditions"][n]["model"]], label)
-                      for y, (n, label) in zip(ys, rows, strict=True)])
+            ("C", "Gemini 3.5 Flash-Lite,\nshopping assistant")]
+    fig, ax = plt.subplots(figsize=(TEXT_W - 0.1, 1.85))
+    ys = np.arange(len(rows))[::-1].astype(float)
     for y, (n, _) in zip(ys, rows, strict=True):
-        e = s["conditions"][n]["efficiency"]["efficiency"]
-        ax.text(e + 0.015, y, f[f"{n}.eff"], fontproperties=sans(15, "semibold"), color=INK,
-                va="center")
-    fr = s["theory"]["ms_frontier"]
-    ax.plot([fr, fr], [ys[-1] - h, ys[0] + 0.6], color=INK, lw=1)
-    ax.text(fr, ys[0] + 0.64, f"bound {f['frontier']}", fontproperties=sans(SMALL),
-            color=INK_2, ha="center", va="bottom")
-    sl.para("Share of the available gains each pair of agents realised.", size=SMALL,
-            color=MUTED)
-    sl.footer(f"{f['calls']} bids and asks, {f['cost_usd']} of API calls.\n{LINK}")
-    return sl
+        c = s["conditions"][n]
+        e = 100 * c["efficiency"]["efficiency"]
+        color = COLOR[c["model"]]
+        hollow = n == "C"
+        ax.barh(y, e, height=0.55, color="white" if hollow else color, edgecolor=color,
+                hatch="////" if hollow else None, lw=0.8)
+        ax.text(e + 2.2, y, f[f"{n}.eff"], va="center", fontsize=12)
+    fr = 100 * s["theory"]["ms_frontier"]
+    ax.axvline(fr, color=INK, lw=0.9, ls=(0, (4, 2.5)))
+    ax.text(fr, 1.03, f"bound {f['frontier']}", ha="center", va="bottom", fontsize=11.5,
+            transform=ax.get_xaxis_transform())
+    ax.set_yticks(ys, [label for _, label in rows])
+    ax.tick_params(axis="y", length=0, labelsize=12)
+    ax.set_xlim(0, 100)
+    ax.set_ylim(-0.6, len(rows) - 0.4)
+    ax.set_xticks([0, 20, 40, 60, 80, 100])
+    ax.set_xlabel("share of the available gains realised (%)", labelpad=3)
+    return save(fig, path)
 
 
-def slide_theorem(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("The theorem")
-    sl.para("A buyer values an item at v and the seller's cost is c. Each knows only their "
-            "own number. Myerson and Satterthwaite (1983) showed that no trading rule is at "
-            "the same time", gap=0.02)
-    for text in (f"efficient (every deal with {keep('v > c')} happens),",
-                 "incentive compatible (it works when both sides bid strategically),",
-                 "voluntary (nobody expects to lose by taking part),",
-                 "and budget-balanced (no money comes from outside)."):
-        sl.bullet(text)
-    sl.y -= 0.015
-    sl.para(f"With v and c uniform on {keep('[0, 100]')}, the best a rule with the last "
-            "three properties can do is", gap=0.02)
-    sl.math(r"$\dfrac{\mathrm{gains\ realised}}{\mathrm{gains\ available}}\;\leq\;"
-            r"\dfrac{9/64}{1/6}\;=\;\dfrac{27}{32}\;\approx\;" + f["frontier"].replace(
-                "%", r"\%") + "$", gap=0.035)
-    ax = sl.beside(0.27, f"The missing {f['lost_at_frontier']} comes from private "
-                   "information. Each side shades its number to get a better price, and some "
-                   "deals worth making fall through. The best such rule trades only when "
-                   f"{keep('v − c ≥ 25')}, above the solid line.", "buyer's value v (€)",
-                   "seller's cost c (€)")
+def fig_regions(path: Path) -> list[str]:
+    fig, ax = plt.subplots(figsize=(SIDE, SIDE))
     h, t = th.H, th.eq_trade_gap()
-    ax.fill([0, 0, h - t], [t, h, h], color=WASH, lw=0)
-    ax.fill([0, 0, h - t, h], [0, t, h, h], color=LOST, lw=0)
-    ax.plot([0, h], [0, h], color=INK_2, lw=0.8)
-    ax.plot([0, h - t], [t, h], color=INK, lw=1.4)
-    ax.text(6, 86, "trade", fontproperties=sans(12), color=INK)
-    ax.text(45, 45 + t / 2, "worth making, but lost", fontproperties=sans(11),
-            color=INK, rotation=45, rotation_mode="anchor", ha="center", va="center")
-    ax.text(94, 8, "nothing to gain", fontproperties=sans(11), color=MUTED, ha="right")
-    return sl
+    ax.fill([0, 0, h - t], [t, h, h], color=FILL, lw=0)
+    ax.fill([0, 0, h - t, h], [0, t, h, h], facecolor="white", edgecolor=GREY, hatch="////",
+            lw=0)
+    ax.plot([0, h], [0, h], color=INK, lw=0.6)
+    ax.plot([0, h - t], [t, h], color=INK, lw=1.3)
+    ax.text(6, 86, "trade", fontsize=11.5)
+    ax.text(47, 47 + t / 2, "lost", fontsize=11.5, rotation=45, rotation_mode="anchor",
+            ha="center", va="center",
+            bbox={"boxstyle": "square,pad=0.15", "fc": "white", "ec": "none"})
+    ax.text(95, 6, "no gains", fontsize=11.5, ha="right")
+    square(ax, "seller's cost $c$ (€)", "buyer's value $v$ (€)")
+    return save(fig, path)
 
 
-def slide_mechanism(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("The auction")
-    sl.para("Buyer and seller each submit a sealed number, a bid b and an ask s. If "
-            f"{keep('b ≥ s')} they trade at {keep('p = (b + s)/2')}.", gap=0.03)
-    sl.para("Against asks spread evenly above a lowest ask, the buyer's best bid is",
-            gap=0.018)
-    sl.math(r"$\max_{b}\;\int_{s_{\min}}^{b}\left(v-\dfrac{b+s}{2}\right)\mathrm{d}s"
-            r"\;\;\Rightarrow\;\; b=\dfrac{2v+s_{\min}}{3}$", gap=0.03)
-    sl.para("Doing the same for the seller and solving both gives the linear equilibrium of "
-            "Chatterjee and Samuelson (1983)", gap=0.018)
-    sl.math(r"$b(v)=\dfrac{2}{3}\,v+\dfrac{25}{3}\qquad s(c)=\dfrac{2}{3}\,c+25$",
-            gap=0.035)
-    ax = sl.beside(0.27, "Wherever a trade is possible, the buyer bids below their value "
-                   "and the seller asks above their cost. They trade only when "
-                   f"{keep('v − c ≥ 25')}, the solid line on the previous slide, so this "
-                   "simple auction loses just the "
-                   f"{f['lost_at_frontier']} that any such rule must lose.", "bid or ask (€)",
-                   "value v or cost c (€)")
+def fig_strategies(path: Path) -> list[str]:
+    fig, ax = plt.subplots(figsize=(SIDE, SIDE))
     x = np.linspace(0, th.H, 101)
-    ax.plot(x, x, color=MUTED, lw=0.9, ls=(0, (1, 2.5)))
-    ax.plot(x, th.eq_buyer_bid(x), color=INK, lw=1.4)
-    ax.plot(x, th.eq_seller_ask(x), color=INK, lw=1.4)
-    ax.text(12, th.eq_seller_ask(12) + 4, "$s(c)$", fontsize=14, color=INK, ha="center",
-            va="bottom")
-    ax.text(88, th.eq_buyer_bid(88) - 4, "$b(v)$", fontsize=14, color=INK, ha="center",
-            va="top")
-    ax.text(83, 89, "truthful", fontproperties=sans(11), color=MUTED, rotation=45,
-            rotation_mode="anchor", ha="center", va="center")
-    return sl
+    ax.plot(x, x, color=GREY, lw=0.8, ls=(0, (1, 2)))
+    ax.plot(x, th.eq_buyer_bid(x), color=INK, lw=1.2)
+    ax.plot(x, th.eq_seller_ask(x), color=INK, lw=1.2)
+    ax.text(14, th.eq_seller_ask(14) + 5, "$s(c)$", fontsize=13, ha="center", va="bottom")
+    ax.text(86, th.eq_buyer_bid(86) - 5, "$b(v)$", fontsize=13, ha="center", va="top")
+    square(ax, "value $v$ or cost $c$ (€)", "bid or ask (€)")
+    return save(fig, path)
 
 
-def slide_why(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("Why 27/32")
-    sl.para(f"Let {keep('g = v − c')}. For {keep('g ≥ 0')} its density is "
-            f"{keep('(100 − g)/100²')}, so if only the deals with {keep('g ≥ t')} go through, "
-            "the expected gains are", gap=0.018)
-    sl.math(r"$G(t)=\int_t^{100} g\,\dfrac{100-g}{100^2}\,\mathrm{d}g"
-            r"\;=\;\dfrac{(100-t)^2\,(100+2t)}{6\cdot 100^2}$", gap=0.04)
-    ax = sl.axes(0.27, left=LEFT + 0.01, right=RIGHT - 0.01, gap=0.09)
+def fig_gains(f: dict, path: Path) -> list[str]:
+    fig, ax = plt.subplots(figsize=(TEXT_W - 0.1, 2.2))
     g = np.linspace(0, th.H, 401)
     dens = g * (th.H - g) / th.H**2
     t = th.eq_trade_gap()
-    ax.fill_between(g, dens, where=g >= t, color=WASH, lw=0)
-    ax.fill_between(g, dens, where=g <= t, color=LOST, lw=0)
-    ax.plot(g, dens, color=INK, lw=1.6)
-    ax.plot([t, t], [0, t * (th.H - t) / th.H**2], color=INK, lw=0.9)
-    ax.text(60, 0.1, f"kept {f['frontier']}", fontproperties=sans(13), color=INK,
-            ha="center")
-    ax.annotate(f"lost {f['lost_at_frontier']}", xy=(15, 0.055), xytext=(2, 0.235),
-                fontproperties=sans(13), color=INK, ha="left", va="top",
-                arrowprops={"arrowstyle": "-", "color": INK_2, "lw": 0.8,
-                            "shrinkA": 4, "shrinkB": 0})
+    ax.fill_between(g, dens, where=g >= t, color=FILL, lw=0)
+    ax.fill_between(g, dens, where=g <= t, facecolor="white", edgecolor=GREY, hatch="////",
+                    lw=0)
+    ax.plot(g, dens, color=INK, lw=1.1)
+    ax.plot([t, t], [0, t * (th.H - t) / th.H**2], color=INK, lw=0.8)
+    ax.text(58, 0.095, f"kept {f['frontier']}", ha="center", fontsize=12)
+    ax.annotate(f"lost {f['lost_at_frontier']}", xy=(17, 0.07), xytext=(3, 0.215),
+                fontsize=12, ha="left", va="top",
+                arrowprops={"arrowstyle": "-", "lw": 0.6, "shrinkA": 2, "shrinkB": 0})
     ax.set_xlim(0, th.H)
     ax.set_ylim(0, 0.27)
-    ax.set_yticks([])
-    ax.spines["left"].set_visible(False)
-    ax.grid(False)
     ax.set_xticks([0, 25, 50, 75, 100])
-    ax.tick_params(labelsize=11)
-    ax.set_xlabel("g = v − c (€), each deal weighted by its gap", fontsize=11.5, labelpad=6)
-    sl.para(f"With no threshold {keep('G(0) = ' + f['first_best_eur'])}. The equilibrium "
-            f"threshold is {keep('t = 25')}, with {keep('G(25) = ' + f['eq_gains_eur'])}, so",
-            gap=0.018)
-    sl.math(r"$\dfrac{G(25)}{G(0)}\;=\;\left(\dfrac{3}{4}\right)^{2}\cdot\dfrac{3}{2}"
-            r"\;=\;\dfrac{27}{32}$")
-    return sl
+    ax.tick_params(axis="y", left=False, right=False, labelleft=False)
+    ax.set_xlabel("gap $g = v - c$ (€)", labelpad=3)
+    return save(fig, path)
 
 
-def slide_bids(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("Bids against the equilibrium")
-    sl.para("Mean bid or ask per 5 € band of values or costs.", size=SMALL, color=MUTED,
-            gap=0.045)
+def fig_bids(s: dict, path: Path) -> list[str]:
+    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W - 0.1, 3.15))
+    x = np.linspace(0, th.H, 101)
     series = [("B", FLASH, False), ("A", LITE, False), ("C", LITE, True)]
-    top = sl.y
-    for j, role in enumerate(("buyer", "seller")):
-        sl.y = top
-        left = LEFT + 0.05 + j * 0.45
-        ax = sl.axes(0.31, left=left, right=left + 0.37, gap=0.06)
-        x = np.linspace(0, th.H, 101)
+    for ax, role in zip(axes, ("buyer", "seller"), strict=True):
         eq = th.eq_buyer_bid(x) if role == "buyer" else th.eq_seller_ask(x)
-        ax.plot(x, x, color=MUTED, lw=0.9, ls=(0, (1, 2.5)))
-        ax.plot(x, eq, color=INK, lw=1.4)
+        ax.plot(x, x, color=GREY, lw=0.8, ls=(0, (1, 2)))
+        ax.plot(x, eq, color=INK, lw=1.1)
         for name, model, hollow in series:
             st = s["conditions"][name][role]["strata"]
-            color = style.MODEL_COLOR[model]
-            ax.plot([b["value_mean"] for b in st], [b["amount_mean"] for b in st],
-                    ls="", marker="o", ms=6, mew=1.4 if hollow else 0.8,
-                    mfc=SURFACE if hollow else color, mec=color if hollow else SURFACE)
-        ax.set_xlim(0, th.H)
-        ax.set_ylim(0, th.H)
-        ax.set_aspect("equal")
-        ax.set_xticks([0, 50, 100])
-        ax.set_yticks([0, 50, 100])
-        ax.tick_params(labelsize=11)
-        ax.set_xlabel("buyer's value (€)" if role == "buyer" else "seller's cost (€)",
-                      fontsize=11.5, labelpad=4)
-        ax.text(0, 1.04, "bid (€)" if role == "buyer" else "ask (€)", fontsize=11.5,
-                color=INK_2, transform=ax.transAxes, va="bottom")
+            color = COLOR[model]
+            ax.plot([b["value_mean"] for b in st], [b["amount_mean"] for b in st], ls="",
+                    marker="o", ms=4.2, mew=0.9, mfc="white" if hollow else color, mec=color)
+        if role == "buyer":
+            square(ax, "buyer's value (€)", "bid (€)")
+        else:
+            square(ax, "seller's cost (€)", "ask (€)")
     handles = [
-        plt.Line2D([], [], ls="", marker="o", ms=7, mfc=style.MODEL_COLOR[FLASH], mec=SURFACE,
+        plt.Line2D([], [], ls="", marker="o", ms=5, mfc=COLOR[FLASH], mec=COLOR[FLASH],
                    label="Flash"),
-        plt.Line2D([], [], ls="", marker="o", ms=7, mfc=style.MODEL_COLOR[LITE], mec=SURFACE,
+        plt.Line2D([], [], ls="", marker="o", ms=5, mfc=COLOR[LITE], mec=COLOR[LITE],
                    label="Flash-Lite"),
-        plt.Line2D([], [], ls="", marker="o", ms=7, mfc=SURFACE, mec=style.MODEL_COLOR[LITE],
-                   mew=1.4, label="Flash-Lite as a shopping assistant"),
-        plt.Line2D([], [], color=INK, lw=1.4, label="equilibrium"),
-        plt.Line2D([], [], color=MUTED, lw=0.9, ls=(0, (1, 2.5)),
-                   label="bid = value, ask = cost"),
+        plt.Line2D([], [], ls="", marker="o", ms=5, mfc="white", mec=COLOR[LITE], mew=0.9,
+                   label="Flash-Lite, shopping assistant"),
+        plt.Line2D([], [], color=INK, lw=1.1, label="equilibrium"),
+        plt.Line2D([], [], color=GREY, lw=0.8, ls=(0, (1, 2)), label="bid = value, ask = cost"),
     ]
-    sl.y -= 0.012
-    sl.fig.legend(handles=handles, loc="upper left", bbox_to_anchor=(LEFT - 0.008, sl.y),
-                  ncol=3, prop=sans(11.5), frameon=False, handlelength=1.6,
-                  columnspacing=1.4, handletextpad=0.5, borderaxespad=0)
-    sl.alt += [h.get_label() for h in handles]
-    sl.y -= 0.075
-    sl.bullet(f"Flash put {f['flash_k_half.at_eq_trade_region']} tradeable bids and asks "
-              "exactly on the equilibrium.")
-    sl.bullet("Flash-Lite sellers ask "
-              f"{keep(f['A.seller.slope'] + 'c + ' + f['A.seller.intercept'])} instead of "
-              f"{keep('0.67c + 25')}.")
-    sl.bullet("As a shopping assistant its asks follow "
-              f"{keep(f['C.seller.slope'] + 'c + ' + f['C.seller.intercept'])}, and "
-              f"{f['C.seller.ir_binding']} were below cost yet low enough to be accepted.")
-    return sl
+    fig.subplots_adjust(wspace=0.4, bottom=0.31)
+    fig.legend(handles=handles, loc="lower center", ncol=3, bbox_to_anchor=(0.5, 0.0),
+               handlelength=1.5, columnspacing=0.9, handletextpad=0.4, fontsize=10)
+    return save(fig, path)
 
 
-def slide_efficiency(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("Efficiency")
-    sl.para("Share of the available gains realised, every buyer call against every seller "
-            "call, with 95% intervals.", size=SMALL, color=MUTED, gap=0.05)
-    ax = sl.axes(0.55, left=LEFT, right=RIGHT - 0.12, gap=0.045)
-    ys = np.array([5.4, 4.4, 3.4, 1.6, 0.6])  # a wider gap between the two models
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 6.3)
-    ax.axis("off")
-    rows = [(y, s["conditions"][n]["efficiency"]["efficiency"],
-             style.MODEL_COLOR[s["conditions"][n]["model"]], SHORT[n])
-            for y, n in zip(ys, ORDER, strict=True)]
-    bar_rows(ax, rows)
-    for y, name in zip(ys, ORDER, strict=True):
-        lo, hi = s["conditions"][name]["efficiency"]["efficiency_ci"]
-        ax.plot([lo, hi], [y, y], color=INK, lw=1.3, solid_capstyle="butt")
-        ax.text(1.03, y, f[f"{name}.eff"], fontproperties=sans(14, "semibold"), color=INK,
-                va="center", transform=ax.get_yaxis_transform())
-    fr = s["theory"]["ms_frontier"]
-    ax.plot([fr, fr], [0.25, 6.0], color=INK, lw=1)
-    ax.text(fr, 6.05, f"bound {f['frontier']}", fontproperties=sans(SMALL), color=INK_2,
-            ha="center", va="bottom")
-    sl.para(f"Equilibrium play on the same draws realises {f['B.eq_same_draws']}, the same "
-            "as Flash.")
-    return sl
-
-
-def slide_recall(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("Changing the price rule")
-    sl.quote("Flash, as a shopping assistant buying a used camera lens", q["recall"])
-    sl.para(f"Flash named Chatterjee–Samuelson in {f['flash_k_half.named']} calls. So I "
-            f"changed the price to {keep('p = (b + 2s)/3')}, which moves the equilibrium to",
-            gap=0.018)
-    sl.math(r"$b(v)=\dfrac{3}{4}\,v+\dfrac{25}{3}\qquad s(c)=\dfrac{3}{5}\,c+\dfrac{100}{3}$",
-            gap=0.032)
-    sl.quote("Flash, with the new price rule", q["derive"])
-    ax = sl.beside(0.22, f"{f['E.at_eq_trade_region']} tradeable bids and asks landed on the "
-                   f"new equilibrium and {f['E.at_k_half']} on the old one. Derivatives or "
-                   f"first-order conditions appear in {f['E.derivation_terms']} summaries, "
-                   f"against {f['flash_k_half.derivation_terms']} before, and it realised "
-                   f"{f['E.eff']} of the gains against {f['k13_eff']} in theory.", "bid (€)",
-                   "buyer's value (€)")
+def fig_new_rule(s: dict, path: Path) -> list[str]:
+    fig, ax = plt.subplots(figsize=(SIDE, SIDE))
     x = np.linspace(0, th.H, 101)
-    ax.plot(x, th.eq_buyer_bid(x, k=1 / 3), color=INK, lw=1.4, label="new equilibrium")
-    ax.plot(x, th.eq_buyer_bid(x), color=INK_2, lw=1.1, ls=(0, (4, 2.5)),
-            label="old equilibrium")
+    ax.plot(x, th.eq_buyer_bid(x, k=1 / 3), color=INK, lw=1.1, label="new equilibrium")
+    ax.plot(x, th.eq_buyer_bid(x), color=GREY, lw=0.9, ls=(0, (4, 2)), label="old equilibrium")
     st = s["conditions"]["E"]["buyer"]["strata"]
     ax.plot([b["value_mean"] for b in st], [b["amount_mean"] for b in st], ls="", marker="o",
-            ms=5.5, mfc=style.MODEL_COLOR[FLASH], mec=SURFACE, mew=0.8,
-            label="Flash, mean bid")
-    legend = ax.legend(loc="upper left", prop=sans(10.5), handlelength=1.8,
-                       borderaxespad=0.1)
-    sl.alt += [t.get_text() for t in legend.get_texts()]
-    return sl
+            ms=3.8, mew=0.8, mfc=COLOR[FLASH], mec=COLOR[FLASH], label="Flash, mean bid")
+    square(ax, "buyer's value (€)", "bid (€)")
+    return save(fig, path)
 
 
-def slide_exploit(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("Exploitability")
-    sl.para("I fitted the exact best response to each agent's asks on half of the calls and "
-            "scored it on the other half. The bars show what that rival buyer gains per "
-            "auction over playing the equilibrium.", gap=0.05)
-    ax = sl.axes(0.36, left=LEFT, right=RIGHT - 0.16, gap=0.085)
-    ys = np.array([5.4, 4.4, 3.4, 1.6, 0.6])
-    ax.set_xlim(-0.3, 0.95)
-    ax.set_ylim(0, 6.2)
-    rows = []
-    for y, name in zip(ys, ORDER, strict=True):
-        c = s["conditions"][name]
-        rows.append((y, c["exploitability"]["vs_model_seller"]["br_gain_over_eq_play"],
-                     style.MODEL_COLOR[c["model"]], SHORT[name]))
-    h = bar_rows(ax, rows)
-    for y, name in zip(ys, ORDER, strict=True):
-        x = s["conditions"][name]["exploitability"]["vs_model_seller"]
-        lo, hi = x["br_gain_over_eq_play_ci"]
-        ax.plot([lo, hi], [y, y], color=INK, lw=1.3, solid_capstyle="butt")
-        ax.text(1.04, y, f[f"{name}.exploit_seller.gain"] + " €",
-                fontproperties=sans(14, "semibold"), color=INK, va="center",
-                transform=ax.get_yaxis_transform())
-    ax.plot([0, 0], [ys[-1] - h, ys[0] + h], color=INK_2, lw=0.9)
-    ax.set_yticks([])
-    ax.set_xticks([-0.2, 0, 0.2, 0.4, 0.6, 0.8])
-    ax.xaxis.set_major_formatter(
-        plt.FuncFormatter(lambda v, _: "0" if abs(v) < 1e-9 else fx.signed(v, 1)))
-    ax.tick_params(labelsize=11)
-    ax.spines["left"].set_visible(False)
-    ax.grid(axis="y", visible=False)
-    ax.set_xlabel("€ per auction, with 95% intervals", fontsize=11.5, labelpad=6)
+# --- the pages ------------------------------------------------------------------------------
+
+
+def page_title(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    head, tail = TITLE.split(" the ")
+    pg.raw("#align(center)[\n"
+           f"  #v(2pt)\n  #text(20pt, weight: \"bold\", hyphenate: false)"
+           f"[{T(head + ' the')} \\ {T(tail)}]\n  #v(10pt)\n"
+           f"  #text(14pt)[{T(AUTHOR)}]\n  #v(-1pt)\n  #text(12pt)[{T(DATE)}]\n]",
+           [AUTHOR, TITLE, DATE])
+    abstract = (
+        "I put Gemini agents on both sides of a sealed-bid double auction, with values "
+        "uniform on 0–100 €. When both sides bid strategically, no trading rule can realise "
+        f"more than {f['frontier']} of the gains (Myerson and Satterthwaite, 1983). Gemini "
+        f"3.8 Flash realised {f['B.eff']}, as much as equilibrium play, and every bid and ask "
+        "it made that could trade sat on the textbook equilibrium to the cent. Gemini 3.5 "
+        f"Flash-Lite realised {f['A.eff']}, and {f['C.eff']} as a shopping assistant.")
+    pg.raw("#v(6pt)\n#align(center, text(12.5pt, weight: \"bold\")[Abstract])\n#v(-3pt)\n"
+           f"#pad(x: 1.2em)[#set text(12pt)\n#set par(leading: 0.45em)\n{T(abstract)}]",
+           ["Abstract", P(abstract)])
+    labels = fig_overview(s, f, out / "fig-1.svg")
+    pg.raw("#v(4pt)")
+    pg.figure("fig-1.svg", 1, "Share of the available gains each pair of agents realised. "
+              "The dashed line is the Myerson–Satterthwaite bound.", labels)
+    note = (f"{f['calls']} bids and asks, {usd(f['cost_usd'])} of API calls. Code, data and "
+            "the full derivation are linked in the first comment.")
+    pg.raw("#v(1fr)\n#block(width: 100%, {\n"
+           "  line(length: 30%, stroke: 0.4pt)\n  v(-4pt)\n"
+           f"  text(10.5pt)[{T(note)}]\n}})", P(note))
+    return pg
+
+
+def page_theorem(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("The theorem")
+    pg.p("A buyer values an item at $v$ and the seller's cost is $c$. Each knows only their "
+         "own number. Myerson and Satterthwaite (1983) showed that no trading rule is at the "
+         "same time")
+    items = [("efficient", "every deal with $v > c$ happens;"),
+             ("incentive compatible", "it works when both sides bid strategically;"),
+             ("voluntary", "nobody expects to lose by taking part;"),
+             ("budget-balanced", "no money comes from outside.")]
+    pg.raw('#enum(numbering: "(i)", ' + ", ".join(
+        f"[#emph[{T(term)}]: {T(rest)}]" for term, rest in items) + ")",
+        [f"{term}: {P(rest)}" for term, rest in items])
+    pg.p("With $v$ and $c$ uniform on $[0, 100]$, the best a rule with the last three "
+         "properties can do is")
+    pg.eq(f'"gains realised" / "gains available" <= (9\\/64)/(1\\/6) = 27/32 approx '
+          f"{f['frontier']}",
+          f"gains realised / gains available ≤ (9/64)/(1/6) = 27/32 ≈ {f['frontier']}")
+    labels = fig_regions(out / "fig-2.svg")
+    pg.beside("fig-2.svg", 2, "Deals by cost and value. The best such rule trades only when "
+              "$v − c ≥ 25$, above the solid line.",
+              f"The missing {f['lost_at_frontier']} comes from private information. Each side "
+              "shades its number to get a better price, and the deals between the two lines, "
+              "worth making, fall through.", labels)
+    return pg
+
+
+def page_auction(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("The auction")
+    pg.p("Buyer and seller each submit a sealed number, a bid $b$ and an ask $s$. If "
+         "$b ≥ s$ they trade at $p = (b + s)\\/2$. Against asks spread evenly above a lowest "
+         "ask, the buyer's best bid is")
+    pg.eq("max_b integral_(s_min)^b (v - (b + s)/2) dif s ==> b = (2v + s_min)/3",
+          "max over b of ∫ from s_min to b of (v − (b + s)/2) ds ⇒ b = (2v + s_min)/3")
+    pg.p("Doing the same for the seller and solving both gives the linear equilibrium of "
+         "Chatterjee and Samuelson (1983):")
+    pg.eq("b(v) = 2/3 v + 25/3, quad s(c) = 2/3 c + 25",
+          "b(v) = 2/3 v + 25/3, s(c) = 2/3 c + 25")
+    labels = fig_strategies(out / "fig-3.svg")
+    pg.beside("fig-3.svg", 3, "The equilibrium bid and ask. Dotted, bidding one's own number.",
+              "Wherever a trade is possible, the buyer bids below their value and the seller "
+              "asks above their cost. They trade only when $v − c ≥ 25$, so this simple "
+              f"auction loses just the {f['lost_at_frontier']} that any such rule must lose.",
+              labels)
+    return pg
+
+
+def page_why(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("Why 27/32")
+    pg.p("Let $g = v − c$. For $g ≥ 0$ its density is $(100 − g)\\/100^2$, so if only the "
+         "deals with $g ≥ t$ go through, the expected gains are")
+    pg.eq("G(t) = integral_t^100 g (100 - g)/100^2 dif g = ((100 - t)^2 (100 + 2t))"
+          "/(6 dot 100^2)",
+          "G(t) = ∫ from t to 100 of g (100 − g)/100² dg = (100 − t)² (100 + 2t)/(6 · 100²)")
+    labels = fig_gains(f, out / "fig-4.svg")
+    pg.figure("fig-4.svg", 4, "Each deal weighted by its gap $g$. Trading only when "
+              f"$g ≥ 25$ keeps {f['frontier']} of the gains.", labels)
+    pg.p(f"With no threshold $G(0) =$ {f['first_best_eur']}. The equilibrium threshold is "
+         f"$t = 25$, with $G(25) =$ {f['eq_gains_eur']}, so")
+    pg.eq("(G(25))/(G(0)) = (3/4)^2 dot 3/2 = 27/32", "G(25)/G(0) = (3/4)² · 3/2 = 27/32")
+    return pg
+
+
+def page_bids(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("Bids against the equilibrium")
+    pg.p("The solid line is the equilibrium of Section 2, and on the dotted line an agent "
+         "would bid or ask its own number.")
+    labels = fig_bids(s, out / "fig-5.svg")
+    pg.figure("fig-5.svg", 5, "Mean bid or ask per 5 € band of values or costs.", labels)
+    pg.bullets([
+        f"Flash put {f['flash_k_half.at_eq_trade_region']} tradeable bids and asks exactly "
+        "on the equilibrium.",
+        f"Flash-Lite buyers bid ${f['A.buyer.slope']}v + {f['A.buyer.intercept']}$ instead of "
+        f"$0.67v + 8.3$, and its sellers ask ${f['A.seller.slope']}c + "
+        f"{f['A.seller.intercept']}$ instead of $0.67c + 25$: both sides shade too hard.",
+        "As a shopping assistant its asks follow "
+        f"${f['C.seller.slope']}c + {f['C.seller.intercept']}$, and "
+        f"{f['C.seller.ir_binding']} were below cost yet low enough to be accepted.",
+    ])
+    return pg
+
+
+def page_efficiency(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("Efficiency")
+    pg.p("Every buyer call meets every seller call, and the intervals come from a bootstrap "
+         "that resamples buyers and sellers separately.")
+    caption = ("Share of the available gains realised, with 95% intervals, and what "
+               "equilibrium play realises on the same draws.")
+    header = ["", "Realised", "95% CI", "Equilibrium,\nsame draws"]
+    rows, plain = [], [f"Table 1. {caption}", " | ".join(h.replace("\n", " ") for h in header)]
+    for model, members in GROUPS:
+        rows.append(f"table.cell(colspan: 4)[#emph[{T(model)}]]")
+        plain.append(model)
+        for name, label in members:
+            cells = [label, f[f"{name}.eff"], f[f"{name}.eff_ci"], f[f"{name}.eq_same_draws"]]
+            rows.append(f"[#h(0.9em){T(cells[0])}], " + ", ".join(f"[{T(c)}]" for c in cells[1:]))
+            plain.append(" | ".join(P(c) for c in cells))
+    pg.raw(f'#cap("Table", 1, above: 1.1em)[{T(caption)}]\n'
+           "#ruled((auto, auto, auto, auto), (left, right, center, right),\n"
+           f"  ({', '.join(head(h) for h in header)}),\n  " + ",\n  ".join(rows) + ")",
+           plain)
+    pg.p("Flash realises what equilibrium play realises on the same draws, in both prompts "
+         f"and under both price rules. Flash-Lite trades in {f['A.trade_rate']} of the pairs, "
+         f"against {f['A.eq_trade_rate']} in equilibrium, and misses {f['A.missed']} of the "
+         f"gains; as a shopping assistant it trades in {f['C.trade_rate']}. No rule can beat "
+         f"{f['frontier']} here, and with $p = (b + 2s)\\/3$ the equilibrium realises "
+         f"{f['k13_eff']}.")
+    note = ("On a 20 × 20 grid of band midpoints, "
+            f"{f['grid_pairs_on_boundary']} pairs sit exactly on the trade boundary "
+            "$v − c = 25$, and whether they trade moves the benchmark itself between "
+            f"{f['grid_eq_eff_skip']} and {f['grid_eq_eff_trade']}. So values and costs are "
+            "drawn uniformly within each 5 € band.")
+    pg.raw(f"#emph[Why random draws.] {T(note)}", f"Why random draws. {P(note)}")
+    return pg
+
+
+def page_recall(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("Recall or reasoning?")
+    src = "Gemini 3.8 Flash, as a shopping assistant"
+    pg.raw(f"#mquote[{T(q['recall'])}][{T(src)}]", f"“{q['recall']}” ({src})")
+    pg.p(f"Flash named Chatterjee–Samuelson in {f['flash_k_half.named']} calls, even with the "
+         "game disguised as a used camera lens on a second-hand marketplace. So I changed the "
+         "price to $p = (b + 2s)\\/3$, which moves the equilibrium to")
+    pg.eq("b(v) = 3/4 v + 25/3, quad s(c) = 3/5 c + 100/3",
+          "b(v) = 3/4 v + 25/3, s(c) = 3/5 c + 100/3")
+    src = "Gemini 3.8 Flash, with the new price rule"
+    pg.raw(f"#mquote[{T(q['derive'])}][{T(src)}]", f"“{q['derive']}” ({src})")
+    labels = fig_new_rule(s, out / "fig-6.svg")
+    pg.beside("fig-6.svg", 6, "Flash's mean bid per 5 € band with the new rule (dots), the "
+              "new equilibrium (solid) and the old one (dashed).",
+              f"{f['E.at_eq_trade_region']} tradeable bids and asks landed on the new "
+              f"equilibrium and {f['E.at_k_half']} on the old one. Derivatives or first-order "
+              f"conditions appear in {f['E.derivation_terms']} summaries, against "
+              f"{f['flash_k_half.derivation_terms']} before, and it realised {f['E.eff']} of "
+              f"the gains against {f['k13_eff']} in theory.", labels)
+    return pg
+
+
+def page_exploit(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("Exploitability")
+    pg.p("For each agent I fitted the exact best response to its asks, and to its bids, on "
+         "half of the calls and scored it on the other half. Against a finite sample the "
+         "payoff is piecewise linear, so its maximum falls on a sampled value and enumerating "
+         "them is exact.")
+    caption = ("What the best-responding rival gains per auction over playing the "
+               "equilibrium, in €, with 95% intervals.")
+    header = ["", "Rival buyer,\nagainst its asks", "Rival seller,\nagainst its bids"]
+    head_typ = ", ".join(head(h) for h in header)
+    rows, plain = [], [f"Table 2. {caption}",
+                       " | ".join(h.replace("\n", " ") for h in header)]
+    for model, members in GROUPS:
+        rows.append(f"table.cell(colspan: 3)[#emph[{T(model)}]]")
+        plain.append(model)
+        for name, label in members:
+            cells = [label]
+            for side in ("seller", "buyer"):
+                cells.append(f"{f[f'{name}.exploit_{side}.gain']} "
+                             f"{f[f'{name}.exploit_{side}.gain_ci']}")
+            rows.append(f"[#h(0.9em){T(cells[0])}], " + ", ".join(f"[{T(c)}]" for c in cells[1:]))
+            plain.append(" | ".join(P(c) for c in cells))
+    pg.raw(f'#cap("Table", 2, above: 1.1em)[{T(caption)}]\n'
+           "#ruled((auto, auto, auto), (left, center, center),\n"
+           f"  ({head_typ}),\n  " + ",\n  ".join(rows) + ")", plain)
     worst_buyer = max((s["conditions"][n]["exploitability"]["vs_model_buyer"]
                        ["br_gain_over_eq_play"], n) for n in ORDER)[1]
-    sl.para("A best response gains nothing against Flash. Against the shopping-assistant "
-            f"Flash-Lite it gains {keep(f['C.exploit_seller.gain'] + ' €')} per auction "
-            f"{keep(f['C.exploit_seller.gain_ci'])}, "
-            f"{f['C.exploit_seller.gain_rel'].lstrip('+')} more than equilibrium play. As "
-            "buyers, every agent was harder to exploit (at most "
-            f"{keep(f[worst_buyer + '.exploit_buyer.gain'] + ' €')}).")
-    return sl
+    pg.p("A best response gains nothing against Flash. Against the shopping-assistant "
+         f"Flash-Lite, the rival buyer earns {f['C.exploit_seller.rival_br_eur']} per auction "
+         f"instead of {f['C.exploit_seller.rival_eq_eur']}: {f['C.exploit_seller.gain']} € "
+         f"{f['C.exploit_seller.gain_ci']}, {f['C.exploit_seller.gain_rel'].lstrip('+')} more "
+         "than equilibrium play. As buyers, every agent was harder to exploit: at most "
+         f"{f[worst_buyer + '.exploit_buyer.gain']} €.")
+    pg.p("The intervals hold the fitted strategy fixed and resample the scored calls. "
+         "Refitting inside the bootstrap, as I first did, biased them down.")
+    return pg
 
 
-def slide_takeaways(s: dict, f: dict, q: dict) -> Slide:
-    sl = Slide()
-    sl.title("What I'd check", gap=0.04)
-    for i, text in enumerate((
+def page_takeaways(s: dict, f: dict, q: dict, out: Path) -> Page:
+    pg = Page()
+    pg.h("What I'd check")
+    items = [
         f"Benchmark trading agents against the frontier, {f['frontier']} here, rather than "
         "100%. A pair above it is not in equilibrium, and a smarter rival can exploit that.",
         "Use variants of famous games to tell recall from reasoning.",
-        f"Test the framing you will ship. Flash-Lite fell from {f['A.eff']} to {f['C.eff']} "
-        "as a shopping assistant.",
-        "Measure exploitability with held-out best responses, and block dominated moves "
-        "such as selling below cost.",
-    ), start=1):
-        sl.bullet(text, gap=0.04, mark=f"{i}.")
-    sl.y -= 0.03
-    sl.para("Code, data and the full derivation of 27/32:", gap=0.01)
-    sl.para(REPO, color=INK, weight="medium", gap=0.016)
-    sl.para("Everything reruns from the cached calls, without an API key.", size=SMALL,
-            color=MUTED)
-    sl.footer(AUTHOR)
-    return sl
+        f"Test the framing you will ship. Flash-Lite fell from {f['A.eff']} to {f['C.eff']} as "
+        "a shopping assistant.",
+        "Measure exploitability with held-out best responses, and block dominated moves such "
+        "as selling below cost.",
+    ]
+    pg.raw("\n".join(f"+ {T(t)}" for t in items), [P(t) for t in items])
+    limits = ("A famous game, thought summaries rather than reasoning, one prior and one "
+              "shot, each model playing itself, and model and thinking level changed "
+              "together. The shopping-assistant prompt and the new price rule were added "
+              "after a 20-call pilot.")
+    pg.raw(f"#emph[Limitations.] {T(limits)}", f"Limitations. {P(limits)}")
+    pg.raw("#v(4pt)\n" + T("Code, data and the full derivation of 27/32:") +
+           f"\n\n#align(center, strong[{T(REPO)}])\n\n#text(11pt)[" +
+           T("Everything reruns from the cached calls, without an API key.") + "]",
+           ["Code, data and the full derivation of 27/32:", REPO,
+            "Everything reruns from the cached calls, without an API key."])
+    refs = []
+    for lead, journal, tail in REFERENCES:
+        refs.append(f"[{T(lead)} #emph[{T(journal)}], {T(tail)}]")
+    pg.raw("#heading(level: 2, numbering: none)[References]\n"
+           "#block({\n  set text(10.5pt)\n  set par(justify: false, hanging-indent: 1.2em, "
+           "leading: 0.42em, spacing: 0.6em)\n  " + "\n  parbreak()\n  ".join(refs) +
+           "\n})")
+    pg.refs = [f"{lead} {journal}, {tail}" for lead, journal, tail in REFERENCES]
+    return pg
 
 
-SLIDES = [slide_cover, slide_theorem, slide_mechanism, slide_why, slide_bids,
-          slide_efficiency, slide_recall, slide_exploit, slide_takeaways]
+PAGES = [page_title, page_theorem, page_auction, page_why, page_bids, page_efficiency,
+         page_recall, page_exploit, page_takeaways]
 
 
 def make_carousel(results_dir: Path, carousel_dir: Path) -> None:
     logging.getLogger("fontTools").setLevel(logging.ERROR)  # font timestamps, harmless
-    style.apply()
+    paper_style()
     summary = style.load_summary(results_dir)
     facts = fx.build(summary)
     quotes = load_quotes(results_dir)
-    carousel_dir = Path(carousel_dir)
-    carousel_dir.mkdir(parents=True, exist_ok=True)
-    for old in carousel_dir.glob("slide-*.png"):
+    out = Path(carousel_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    for old in [*out.glob("slide-*.png"), *out.glob("fig-*.svg")]:
         old.unlink()
-    pdf_path = carousel_dir / "carousel.pdf"
-    text = []  # the slides as plain text: a text alternative, and input for `auction check`
-    with PdfPages(pdf_path, metadata={"Title": "Gemini agents and the "
-                                               "Myerson-Satterthwaite bound",
-                                      "CreationDate": None}) as pdf:
-        for i, make in enumerate(SLIDES, start=1):
-            sl = make(summary, facts, quotes)
-            if sl.y < sl.floor:
-                print(f"  warning: slide {i} overflows (cursor at {sl.y:.3f}, floor "
-                      f"{sl.floor:.3f})")
-            sl.fig.savefig(carousel_dir / f"slide-{i:02d}.png", dpi=DPI)
-            pdf.savefig(sl.fig)
-            labels = [t.get_text() for ax in sl.fig.axes for t in ax.texts]
-            text.append(f"## Slide {i}\n\n" + "\n\n".join(
-                t for t in sl.alt + labels if t.strip()))
-            plt.close(sl.fig)
-    (carousel_dir / "slides.txt").write_text("\n\n".join(text) + "\n")
-    print(f"-> {pdf_path} ({len(SLIDES)} slides)")
+    pages = [make(summary, facts, quotes, out) for make in PAGES]
+    source = PREAMBLE.replace("@TITLE", TITLE).replace("@AUTHOR", AUTHOR)
+    source += "\n" + "\n\n#pagebreak()\n\n".join(pg.markup() for pg in pages) + "\n"
+    typ = out / "carousel.typ"
+    typ.write_text(source)
+    common = {"root": str(out), "font_paths": [str(style.FONTS)], "ignore_system_fonts": True}
+    pdf_path = out / "carousel.pdf"
+    typst.compile(str(typ), output=str(pdf_path), **common)
+    typst.compile(str(typ), output=str(out / "slide-{p}.png"), format="png", ppi=180, **common)
+    pngs = sorted(out.glob("slide-*.png"), key=lambda p: int(re.search(r"\d+", p.name)[0]))
+    for i, png in enumerate(pngs, start=1):
+        png.rename(out / f"slide-{i:02d}.png")
+    if len(pngs) != len(PAGES):
+        print(f"  warning: {len(pngs)} pages for {len(PAGES)} slides: something overflows")
+    text = [f"## Slide {i}\n\n" + "\n\n".join(t for t in pg.txt if t.strip())
+            for i, pg in enumerate(pages, start=1)]
+    refs = getattr(pages[-1], "refs", [])
+    (out / "slides.txt").write_text("\n\n".join(text) + "\n\n## References\n\n" +
+                                    "\n".join(refs) + "\n")
+    print(f"-> {pdf_path} ({len(pngs)} pages)")

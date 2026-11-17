@@ -2,20 +2,15 @@
 
 Óscar García López
 
-Gemini agents vs. the Myerson–Satterthwaite bound
+Gemini agents vs the Myerson–Satterthwaite bound
 
-I put Gemini agents on both sides of a sealed-bid double auction, with values uniform on 0–100 €. When both sides bid strategically, no trading rule can realise more than 84.4% of the gains (Myerson and Satterthwaite, 1983).
+November 2026
 
-Share of the available gains each pair of agents realised.
+Abstract
 
-1,240 bids and asks, $2.00 of API calls.
-Code, data and the full derivation are linked in the first comment.
+I put Gemini agents on both sides of a sealed-bid double auction, with values uniform on 0–100 €. When both sides bid strategically, no trading rule can realise more than 84.4% of the gains (Myerson and Satterthwaite, 1983). Gemini 3.8 Flash realised 84.2%, as much as equilibrium play, and every bid and ask it made that could trade sat on the textbook equilibrium to the cent. Gemini 3.5 Flash-Lite realised 44.9%, and 16.8% as a shopping assistant.
 
-Gemini 3.8 Flash
-
-Gemini 3.5 Flash-Lite
-
-Gemini 3.5 Flash-Lite as a shopping assistant
+Figure 1. Share of the available gains each pair of agents realised. The dashed line is the Myerson–Satterthwaite bound.
 
 84.2%
 
@@ -24,6 +19,16 @@ Gemini 3.5 Flash-Lite as a shopping assistant
 16.8%
 
 bound 84.4%
+
+share of the available gains realised (%)
+
+Gemini 3.8 Flash
+
+Gemini 3.5 Flash-Lite
+
+Gemini 3.5 Flash-Lite, shopping assistant
+
+1,240 bids and asks, $2.00 of API calls. Code, data and the full derivation are linked in the first comment.
 
 ## Slide 2
 
@@ -31,79 +36,97 @@ The theorem
 
 A buyer values an item at v and the seller's cost is c. Each knows only their own number. Myerson and Satterthwaite (1983) showed that no trading rule is at the same time
 
-efficient (every deal with v > c happens),
+efficient: every deal with v > c happens;
 
-incentive compatible (it works when both sides bid strategically),
+incentive compatible: it works when both sides bid strategically;
 
-voluntary (nobody expects to lose by taking part),
+voluntary: nobody expects to lose by taking part;
 
-and budget-balanced (no money comes from outside).
+budget-balanced: no money comes from outside.
 
-With v and c uniform on [0, 100], the best a rule with the last three properties can do is
+With v and c uniform on [0, 100], the best a rule with the last three properties can do is
 
-$\dfrac{\mathrm{gains\ realised}}{\mathrm{gains\ available}}\;\leq\;\dfrac{9/64}{1/6}\;=\;\dfrac{27}{32}\;\approx\;84.4\%$
+gains realised / gains available ≤ (9/64)/(1/6) = 27/32 ≈ 84.4%
 
-The missing 15.6% comes from private information. Each side shades its number to get a better price, and some deals worth making fall through. The best such rule trades only when v − c ≥ 25, above the solid line.
+Figure 2. Deals by cost and value. The best such rule trades only when v − c ≥ 25, above the solid line.
 
-buyer's value v (€)
+The missing 15.6% comes from private information. Each side shades its number to get a better price, and the deals between the two lines, worth making, fall through.
 
 trade
 
-worth making, but lost
+lost
 
-nothing to gain
+no gains
+
+seller's cost $c$ (€)
+
+buyer's value $v$ (€)
 
 ## Slide 3
 
 The auction
 
-Buyer and seller each submit a sealed number, a bid b and an ask s. If b ≥ s they trade at p = (b + s)/2.
+Buyer and seller each submit a sealed number, a bid b and an ask s. If b ≥ s they trade at p = (b + s)/2. Against asks spread evenly above a lowest ask, the buyer's best bid is
 
-Against asks spread evenly above a lowest ask, the buyer's best bid is
+max over b of ∫ from s_min to b of (v − (b + s)/2) ds ⇒ b = (2v + s_min)/3
 
-$\max_{b}\;\int_{s_{\min}}^{b}\left(v-\dfrac{b+s}{2}\right)\mathrm{d}s\;\;\Rightarrow\;\; b=\dfrac{2v+s_{\min}}{3}$
+Doing the same for the seller and solving both gives the linear equilibrium of Chatterjee and Samuelson (1983):
 
-Doing the same for the seller and solving both gives the linear equilibrium of Chatterjee and Samuelson (1983)
+b(v) = 2/3 v + 25/3, s(c) = 2/3 c + 25
 
-$b(v)=\dfrac{2}{3}\,v+\dfrac{25}{3}\qquad s(c)=\dfrac{2}{3}\,c+25$
+Figure 3. The equilibrium bid and ask. Dotted, bidding one's own number.
 
-Wherever a trade is possible, the buyer bids below their value and the seller asks above their cost. They trade only when v − c ≥ 25, the solid line on the previous slide, so this simple auction loses just the 15.6% that any such rule must lose.
-
-bid or ask (€)
+Wherever a trade is possible, the buyer bids below their value and the seller asks above their cost. They trade only when v − c ≥ 25, so this simple auction loses just the 15.6% that any such rule must lose.
 
 $s(c)$
 
 $b(v)$
 
-truthful
+value $v$ or cost $c$ (€)
+
+bid or ask (€)
 
 ## Slide 4
 
 Why 27/32
 
-Let g = v − c. For g ≥ 0 its density is (100 − g)/100², so if only the deals with g ≥ t go through, the expected gains are
+Let g = v − c. For g ≥ 0 its density is (100 − g)/100², so if only the deals with g ≥ t go through, the expected gains are
 
-$G(t)=\int_t^{100} g\,\dfrac{100-g}{100^2}\,\mathrm{d}g\;=\;\dfrac{(100-t)^2\,(100+2t)}{6\cdot 100^2}$
+G(t) = ∫ from t to 100 of g (100 − g)/100² dg = (100 − t)² (100 + 2t)/(6 · 100²)
 
-With no threshold G(0) = 16.67 €. The equilibrium threshold is t = 25, with G(25) = 14.06 €, so
-
-$\dfrac{G(25)}{G(0)}\;=\;\left(\dfrac{3}{4}\right)^{2}\cdot\dfrac{3}{2}\;=\;\dfrac{27}{32}$
+Figure 4. Each deal weighted by its gap g. Trading only when g ≥ 25 keeps 84.4% of the gains.
 
 kept 84.4%
 
 lost 15.6%
 
+gap $g = v - c$ (€)
+
+With no threshold G(0) = 16.67 €. The equilibrium threshold is t = 25, with G(25) = 14.06 €, so
+
+G(25)/G(0) = (3/4)² · 3/2 = 27/32
+
 ## Slide 5
 
 Bids against the equilibrium
 
-Mean bid or ask per 5 € band of values or costs.
+The solid line is the equilibrium of Section 2, and on the dotted line an agent would bid or ask its own number.
+
+Figure 5. Mean bid or ask per 5 € band of values or costs.
+
+buyer's value (€)
+
+bid (€)
+
+seller's cost (€)
+
+ask (€)
 
 Flash
 
 Flash-Lite
 
-Flash-Lite as a shopping assistant
+Flash-Lite, shopping assistant
 
 equilibrium
 
@@ -111,67 +134,55 @@ bid = value, ask = cost
 
 Flash put 240 of 240 tradeable bids and asks exactly on the equilibrium.
 
-Flash-Lite sellers ask 0.46c + 43.0 instead of 0.67c + 25.
+Flash-Lite buyers bid 0.69v + 0.7 instead of 0.67v + 8.3, and its sellers ask 0.46c + 43.0 instead of 0.67c + 25: both sides shade too hard.
 
-As a shopping assistant its asks follow 0.30c + 51.2, and 60 of 200 were below cost yet low enough to be accepted.
-
-bid (€)
-
-ask (€)
+As a shopping assistant its asks follow 0.30c + 51.2, and 60 of 200 were below cost yet low enough to be accepted.
 
 ## Slide 6
 
 Efficiency
 
-Share of the available gains realised, every buyer call against every seller call, with 95% intervals.
+Every buyer call meets every seller call, and the intervals come from a bootstrap that resamples buyers and sellers separately.
 
-Equilibrium play on the same draws realises 84.2%, the same as Flash.
+Table 1. Share of the available gains realised, with 95% intervals, and what equilibrium play realises on the same draws.
 
-Flash
+ | Realised | 95% CI | Equilibrium, same draws
 
-Flash as a shopping assistant
+Gemini 3.8 Flash
 
-Flash with p = (b + 2s)/3
+auction prompt | 84.2% | [83.8, 84.6] | 84.2%
 
-Flash-Lite
+shopping assistant | 84.2% | [83.8, 84.6] | 84.2%
 
-Flash-Lite as a shopping assistant
+price (b + 2s)/3 | 83.2% | [82.8, 83.6] | 83.2%
 
-84.2%
+Gemini 3.5 Flash-Lite
 
-84.2%
+auction prompt | 44.9% | [41.1, 48.4] | 84.6%
 
-83.2%
+shopping assistant | 16.8% | [12.0, 21.4] | 84.6%
 
-44.9%
+Flash realises what equilibrium play realises on the same draws, in both prompts and under both price rules. Flash-Lite trades in 11.6% of the pairs, against 28.3% in equilibrium, and misses 55.1% of the gains; as a shopping assistant it trades in 4.4%. No rule can beat 84.4% here, and with p = (b + 2s)/3 the equilibrium realises 83.3%.
 
-16.8%
-
-bound 84.4%
+Why random draws. On a 20 × 20 grid of band midpoints, 15 of 400 pairs sit exactly on the trade boundary v − c = 25, and whether they trade moves the benchmark itself between 81.6% and 87.2%. So values and costs are drawn uniformly within each 5 € band.
 
 ## Slide 7
 
-Changing the price rule
+Recall or reasoning?
 
-Flash, as a shopping assistant buying a used camera lens
+“Okay, so I'm looking at a classic double auction setup, specifically a Chatterjee-Samuelson linear equilibrium.” (Gemini 3.8 Flash, as a shopping assistant)
 
-“Okay, so I'm looking at a classic double auction setup, specifically a Chatterjee-Samuelson linear equilibrium.”
+Flash named Chatterjee–Samuelson in 320 of 320 calls, even with the game disguised as a used camera lens on a second-hand marketplace. So I changed the price to p = (b + 2s)/3, which moves the equilibrium to
 
-Flash named Chatterjee–Samuelson in 320 of 320 calls. So I changed the price to p = (b + 2s)/3, which moves the equilibrium to
+b(v) = 3/4 v + 25/3, s(c) = 3/5 c + 100/3
 
-$b(v)=\dfrac{3}{4}\,v+\dfrac{25}{3}\qquad s(c)=\dfrac{3}{5}\,c+\dfrac{100}{3}$
+“With some algebra, and taking the derivative with respect to b, I eventually arrive at b = (v + (1/3)βs) / (4/3).” (Gemini 3.8 Flash, with the new price rule)
 
-Flash, with the new price rule
-
-“With some algebra, and taking the derivative with respect to b, I eventually arrive at b = (v + (1/3)βs) / (4/3).”
+Figure 6. Flash's mean bid per 5 € band with the new rule (dots), the new equilibrium (solid) and the old one (dashed).
 
 85 of 89 tradeable bids and asks landed on the new equilibrium and 0 of 120 on the old one. Derivatives or first-order conditions appear in 98 of 120 summaries, against 1 of 320 before, and it realised 83.2% of the gains against 83.3% in theory.
 
-new equilibrium
-
-old equilibrium
-
-Flash, mean bid
+buyer's value (€)
 
 bid (€)
 
@@ -179,29 +190,29 @@ bid (€)
 
 Exploitability
 
-I fitted the exact best response to each agent's asks on half of the calls and scored it on the other half. The bars show what that rival buyer gains per auction over playing the equilibrium.
+For each agent I fitted the exact best response to its asks, and to its bids, on half of the calls and scored it on the other half. Against a finite sample the payoff is piecewise linear, so its maximum falls on a sampled value and enumerating them is exact.
 
-A best response gains nothing against Flash. Against the shopping-assistant Flash-Lite it gains +0.78 € per auction [+0.69, +0.87], 17% more than equilibrium play. As buyers, every agent was harder to exploit (at most +0.13 €).
+Table 2. What the best-responding rival gains per auction over playing the equilibrium, in €, with 95% intervals.
 
-Flash
+ | Rival buyer, against its asks | Rival seller, against its bids
 
-Flash as a shopping assistant
+Gemini 3.8 Flash
 
-Flash with p = (b + 2s)/3
+auction prompt | −0.07 [−0.19, +0.05] | −0.03 [−0.10, +0.03]
 
-Flash-Lite
+shopping assistant | −0.07 [−0.19, +0.05] | −0.03 [−0.10, +0.03]
 
-Flash-Lite as a shopping assistant
+price (b + 2s)/3 | −0.03 [−0.10, +0.03] | −0.03 [−0.16, +0.10]
 
-−0.07 €
+Gemini 3.5 Flash-Lite
 
-−0.07 €
+auction prompt | +0.28 [+0.22, +0.34] | +0.03 [−0.06, +0.12]
 
-−0.03 €
+shopping assistant | +0.78 [+0.69, +0.87] | +0.13 [+0.07, +0.19]
 
-+0.28 €
+A best response gains nothing against Flash. Against the shopping-assistant Flash-Lite, the rival buyer earns 5.23 € per auction instead of 4.45 €: +0.78 € [+0.69, +0.87], 17% more than equilibrium play. As buyers, every agent was harder to exploit: at most +0.13 €.
 
-+0.78 €
+The intervals hold the fitted strategy fixed and resample the scored calls. Refitting inside the bootstrap, as I first did, biased them down.
 
 ## Slide 9
 
@@ -215,10 +226,15 @@ Test the framing you will ship. Flash-Lite fell from 44.9% to 16.8% as a shoppin
 
 Measure exploitability with held-out best responses, and block dominated moves such as selling below cost.
 
+Limitations. A famous game, thought summaries rather than reasoning, one prior and one shot, each model playing itself, and model and thinking level changed together. The shopping-assistant prompt and the new price rule were added after a 20-call pilot.
+
 Code, data and the full derivation of 27/32:
 
 github.com/oscargarcialopez/llm-double-auction
 
 Everything reruns from the cached calls, without an API key.
 
-Óscar García López
+## References
+
+Chatterjee, K., & Samuelson, W. (1983). Bargaining under incomplete information. Operations Research, 31(5), 835–851.
+Myerson, R. B., & Satterthwaite, M. A. (1983). Efficient mechanisms for bilateral trading. Journal of Economic Theory, 29(2), 265–281.
